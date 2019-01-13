@@ -1,0 +1,31 @@
+<!doctype HTML>
+<head>
+  <title>VidSpeak</title>
+  <meta content="text.html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <main>
+    <div id="largeVideo"><video id="localvideo" autoplay></video></div>
+    <div id="smallVideo"><video id="remotevideo" autoplay></video><div>
+  </main>
+  <div class="pallette"></div>
+  <nav class="navigation">
+  <div id="menu" class="menu">
+  <button class="icofont icofont-navigation-menu menu-icon"></button>
+</div>
+<ul class="toolbox">
+  <li>
+    <button id="login" title="Login" class="toolbox-item icofont icofont-login subMenu login"></button>
+  </li>
+  <li>
+    <button id="users" title="users" class="toolbox-item icofont icofont-people subMenu users"></button>
+  </li>
+</ul>
+</nav>
+
+  <script src="/socket.io/socket.io.js"> </script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="./scripts/scripts.js"></script>
+</body>
