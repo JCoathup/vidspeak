@@ -363,14 +363,35 @@ main {
   width:100vw;
   height:100vh;
 }
-#localvideo {
+.localvideo {
   position:relative;
   width:100vw;
   height:100vh;
   object-fit: fill;
 }
-#remotevideo {
+.remotevideo {
+  width:25vw;
+  height: 25vh;
+  position:absolute;
+  top: 2vh;
+  right:2vw;
   object-fit: fill;
+}
+
+.remotevideo--active {
+  position:relative;
+  width:100vw;
+  height:100vh;
+  object-fit: fill;
+}
+.localvideo--active{
+  width:25vw;
+  height: 25vh;
+  position:absolute;
+  top: 2vh;
+  right:2vw;
+  object-fit: fill;
+  z-index:10;
 }
 #remote {
   width: 30vw;
@@ -408,13 +429,7 @@ main {
   width:90%;
   font-size:1.25em;
 }
-#remotevideo {
-  width:25vw;
-  height: 25vh;
-  position:absolute;
-  top: 2vh;
-  right:2vw;
-}
+
 #online {
   color:green;
   font-size: 1em;

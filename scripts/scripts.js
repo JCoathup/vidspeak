@@ -361,6 +361,10 @@ function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
   remotevideo.srcObject = remoteStream;
+  remotevideo.classList.remove("remotevideo");
+  remotevideo.classList.add("remotevideo--active");
+  localvideo.classList.remove("localvideo");
+  localvideo.classList.add("localvideo--active");
 }
 
 function handleRemoteStreamRemoved(event) {
