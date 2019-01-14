@@ -105,6 +105,22 @@
   margin:0 auto;
 	content: "\f135";
 }
+.icofont-close-circled:before {
+  margin:0 auto;
+  content: "\efb2";
+}
+.icofont-phone-circle:before {
+  margin:0 auto;
+  content: "\f09b";
+}
+.icofont-exchange:before {
+  margin:0 auto;
+  content: "\efe9";
+}
+.icofont-check-circled:before {
+  margin:0 auto;
+  content: "\efac";
+}
 .icofont-share{
   color:red;
 }
