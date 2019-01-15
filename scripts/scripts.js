@@ -1,4 +1,4 @@
-let socket = io.connect();
+var socket = io.connect();
 let _localvideo = document.querySelector("#localvideo");
 let _remotevideo = document.querySelector("#remotevideo");
 let _menu = document.querySelector("#menu");
@@ -387,7 +387,7 @@ function stop() {
   isStarted = false;
   pc.close();
   pc = null;
-  remoteStream = null;
+  remotevideo.srcObject = null;
   remotevideo.classList.remove("remotevideo--active");
   remotevideo.classList.add("remotevideo");
   localvideo.classList.remove("localvideo--active");
