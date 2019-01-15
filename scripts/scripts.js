@@ -158,7 +158,7 @@ function sendMessage(message) {
 
 var userList;
 //updates online user list
-socket.on('get users', (data) => {
+socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     userList += `<li class='user'>${user}</li><button id = ${user} class = "callButton" style="position:relative; float:left; height:3.5vh; background-color:green; font-size:12px; color:#fff; width:15%; display: inline-block;">&#xefba;</button><button class="hangupButton icofont icofont-close-circled" style="position:relative; float:left; height:3.5vh; background-color:red; font-size:12px; color:#fff; width:15%; display: inline-block;">Hangup</button>`;
@@ -167,7 +167,7 @@ socket.on('get users', (data) => {
   onlineUsers();
 });
 
-document.addEventListener("click", (e) => {
+document.addEventListener("click", function (e) {
   if (e.target && e.target.className == "callButton"){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
