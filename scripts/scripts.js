@@ -32,24 +32,22 @@ var sdpConstraints = {
 var constraints = {
   video: true
 };
-_menu.addEventListener("click", function(e){
-  var _subMenu = document.querySelectorAll(".subMenu");
-  for (var item of _subMenu){
-    if (item.classList.contains("button--active")){
-    // if menu already open then close main menu
-    item.classList.remove("button--active");
-    _pallette.innerHTML = " ";
-    _navigation.classList.remove('nav--move');
-    _pallette.classList.remove('pallette--active');
-    }
-  }
-  //else menu is closed then open main menu
-  _menu.classList.toggle('menu--active');
-  _toolbox.classList.toggle('toolbox--active');
-})
+
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
-
+    var _subMenu = document.querySelectorAll(".subMenu");
+    for (var item of _subMenu){
+      if (item.classList.contains("button--active")){
+      // if menu already open then close main menu
+      item.classList.remove("button--active");
+      _pallette.innerHTML = " ";
+      _navigation.classList.remove('nav--move');
+      _pallette.classList.remove('pallette--active');
+      }
+    }
+    //else menu is closed then open main menu
+    _menu.classList.toggle('menu--active');
+    _toolbox.classList.toggle('toolbox--active');
   }
   if (e.target && e.target.id == "login"){
     menuChecker(e);
