@@ -33,7 +33,7 @@ var constraints = {
   video: true
 };
 
-document.addEventListener("click",  (e) => {
+document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
     for (var item of _subMenu){
