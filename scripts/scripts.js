@@ -88,7 +88,7 @@ if (e.target && e.target.id == "signIn"){
   e.preventDefault();
   if (!_username.value == " "){
     // check for duplicate user
-    socket.on('duplicate username', (data) => {
+    socket.on('duplicate username', function (data) {
       if (data == true) {
         _username.value="";
         _username.placeholder = "Username taken!";
