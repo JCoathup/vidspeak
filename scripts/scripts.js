@@ -387,4 +387,9 @@ function stop() {
   isStarted = false;
   pc.close();
   pc = null;
+  remoteStream = null;
+  remotevideo.classList.remove("remotevideo--active");
+  remotevideo.classList.add("remotevideo");
+  localvideo.classList.remove("localvideo--active");
+  localvideo.classList.add("localvideo");
 }
