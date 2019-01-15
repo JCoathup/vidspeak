@@ -96,7 +96,7 @@ if (e.target && e.target.id == "signIn"){
       }
     });
     //no duplicate found... continue
-    socket.emit('new user', _username.value, () => {
+    socket.emit('new user', _username.value, function() {
       document.querySelector("#loginPanel").innerHTML = loggedIn;
       chatName = _username.value;
       startCam();
