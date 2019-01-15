@@ -3,7 +3,7 @@ var _localvideo = document.querySelector("#localvideo");
 var _remotevideo = document.querySelector("#remotevideo");
 var _menu = document.querySelector("#menu");
 var _toolbox = document.querySelector(".toolbox");
-var _palvarte = document.querySelector(".palvarte");
+var _pallette = document.querySelector(".pallette");
 var _navigation = document.querySelector(".navigation");
 var chatName = null;
 var loggedIn; var loggedOut;
@@ -40,9 +40,9 @@ document.addEventListener("click", function (e) {
       if (item.classList.contains("button--active")){
       // if menu already open then close main menu
       item.classList.remove("button--active");
-      _palvarte.innerHTML = " ";
+      _pallette.innerHTML = " ";
       _navigation.classList.remove('nav--move');
-      _palvarte.classList.remove('palvarte--active');
+      _pallette.classList.remove('pallette--active');
       }
     }
     //else menu is closed then open main menu
@@ -57,25 +57,25 @@ document.addEventListener("click", function (e) {
                        <input id = "username" placeholder = "connect"/>
                        <button id = "signIn">Connect</button>
                      </div>`;
-    if (_palvarte.classList.contains("palvarte--active")){
+    if (_pallette.classList.contains("pallette--active")){
       if(chatName == null){
-        _palvarte.innerHTML = loggedOut;
+        _pallette.innerHTML = loggedOut;
       }
       else {
-        _palvarte.innerHTML = loggedIn;
+        _pallette.innerHTML = loggedIn;
       }
     }
     else {
-      _palvarte.innerHTML = " ";
+      _pallette.innerHTML = " ";
     }
   }
   if (e.target && e.target.id == "users"){
         menuChecker(e);
-  if (_palvarte.classList.contains("palvarte--active")){
-    _palvarte.innerHTML = `<div id = "onlineList"></div>`;
+  if (_pallette.classList.contains("pallette--active")){
+    _pallette.innerHTML = `<div id = "onlineList"></div>`;
     onlineUsers();
   } else {
-    _palvarte.innerHTML = " ";
+    _pallette.innerHTML = " ";
   }
 }
   if (e.target && e.target.id == "youtube"){
@@ -106,8 +106,8 @@ if (e.target && e.target.id == "signIn"){
 
 })
 
-function openPalvarte(){
-  _palvarte.classList.toggle('palvarte--active');
+function openpallette(){
+  _pallette.classList.toggle('pallette--active');
   _navigation.classList.toggle('nav--move');
 }
 
@@ -122,7 +122,7 @@ function menuChecker(e){
       }
     }
     e.target.classList.toggle("button--active");
-    openPalvarte();
+    openpallette();
   }
 }
 ////////////////////////////////////////////////
@@ -145,7 +145,7 @@ function startCam () {
 function onlineUsers () {
   var _onlineList = document.querySelector("#onlineList");
   if (userList != undefined){
-    _palvarte.innerHTML = `<div id = "online">Online now:</div><br>
+    _pallette.innerHTML = `<div id = "online">Online now:</div><br>
                            <div id = "userList">${userList}<div>`;
   }
 }
