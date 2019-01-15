@@ -1,48 +1,48 @@
 var socket = io.connect();
-let _localvideo = document.querySelector("#localvideo");
-let _remotevideo = document.querySelector("#remotevideo");
-let _menu = document.querySelector("#menu");
-let _toolbox = document.querySelector(".toolbox");
-let _pallette = document.querySelector(".pallette");
-let _navigation = document.querySelector(".navigation");
-let chatName = null;
-let loggedIn; let loggedOut;
-let room;
+var _localvideo = document.querySelector("#localvideo");
+var _remotevideo = document.querySelector("#remotevideo");
+var _menu = document.querySelector("#menu");
+var _toolbox = document.querySelector(".toolbox");
+var _palvarte = document.querySelector(".palvarte");
+var _navigation = document.querySelector(".navigation");
+var chatName = null;
+var loggedIn; var loggedOut;
+var room;
 
-let isChannelReady = false;
-let isInitiator = false;
-let isStarted = false;
-let localStream;
-let pc;
-let remoteStream;
-let turnReady;
+var isChannelReady = false;
+var isInitiator = false;
+var isStarted = false;
+var localStream;
+var pc;
+var remoteStream;
+var turnReady;
 
-let pcConfig = {
+var pcConfig = {
   'iceServers': [{
     'urls': 'stun:stun.l.google.com:19302'
   }]
 };
 
 // Set up audio and video regardless of what devices are present.
-let sdpConstraints = {
+var sdpConstraints = {
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
 };
 
-let constraints = {
+var constraints = {
   video: true
 };
 
 document.addEventListener("click",  (e) => {
   if (e.target && e.target.id == "menu"){
-    let _subMenu = document.querySelectorAll(".subMenu");
-    for (let item of _subMenu){
+    var _subMenu = document.querySelectorAll(".subMenu");
+    for (var item of _subMenu){
       if (item.classList.contains("button--active")){
       // if menu already open then close main menu
       item.classList.remove("button--active");
-      _pallette.innerHTML = " ";
+      _palvarte.innerHTML = " ";
       _navigation.classList.remove('nav--move');
-      _pallette.classList.remove('pallette--active');
+      _palvarte.classList.remove('palvarte--active');
       }
     }
     //else menu is closed then open main menu
@@ -57,33 +57,33 @@ document.addEventListener("click",  (e) => {
                        <input id = "username" placeholder = "connect"/>
                        <button id = "signIn">Connect</button>
                      </div>`;
-    if (_pallette.classList.contains("pallette--active")){
+    if (_palvarte.classList.contains("palvarte--active")){
       if(chatName == null){
-        _pallette.innerHTML = loggedOut;
+        _palvarte.innerHTML = loggedOut;
       }
       else {
-        _pallette.innerHTML = loggedIn;
+        _palvarte.innerHTML = loggedIn;
       }
     }
     else {
-      _pallette.innerHTML = " ";
+      _palvarte.innerHTML = " ";
     }
   }
   if (e.target && e.target.id == "users"){
         menuChecker(e);
-  if (_pallette.classList.contains("pallette--active")){
-    _pallette.innerHTML = `<div id = "onlineList"></div>`;
+  if (_palvarte.classList.contains("palvarte--active")){
+    _palvarte.innerHTML = `<div id = "onlineList"></div>`;
     onlineUsers();
   } else {
-    _pallette.innerHTML = " ";
+    _palvarte.innerHTML = " ";
   }
 }
   if (e.target && e.target.id == "youtube"){
     menuChecker(e);
   }
-  let _signIn = document.querySelector("#signIn");
-  let _username = document.querySelector("#username");
-  //let chatName;
+  var _signIn = document.querySelector("#signIn");
+  var _username = document.querySelector("#username");
+  //var chatName;
 if (e.target && e.target.id == "signIn"){
   e.preventDefault();
   if (!_username.value == " "){
@@ -106,15 +106,15 @@ if (e.target && e.target.id == "signIn"){
 
 })
 
-function openPallette(){
-  _pallette.classList.toggle('pallette--active');
+function openPalvarte(){
+  _palvarte.classList.toggle('palvarte--active');
   _navigation.classList.toggle('nav--move');
 }
 
 function menuChecker(e){
   if (e.target && e.target.classList.contains("subMenu")) {
-    let _subMenu = document.querySelectorAll(".subMenu");
-    for (let item of _subMenu){
+    var _subMenu = document.querySelectorAll(".subMenu");
+    for (var item of _subMenu){
       if (item.classList.contains("button--active") && (item != e.target)){
         item.classList.remove("button--active");
         e.target.classList.toggle("button--active");
@@ -122,7 +122,7 @@ function menuChecker(e){
       }
     }
     e.target.classList.toggle("button--active");
-    openPallette();
+    openPalvarte();
   }
 }
 ////////////////////////////////////////////////
@@ -143,9 +143,9 @@ function startCam () {
 }
 
 function onlineUsers () {
-  let _onlineList = document.querySelector("#onlineList");
+  var _onlineList = document.querySelector("#onlineList");
   if (userList != undefined){
-    _pallette.innerHTML = `<div id = "online">Online now:</div><br>
+    _palvarte.innerHTML = `<div id = "online">Online now:</div><br>
                            <div id = "userList">${userList}<div>`;
   }
 }
@@ -156,11 +156,11 @@ function sendMessage(message) {
   socket.emit('message', message);
 }
 
-let userList;
+var userList;
 //updates online user list
 socket.on('get users', (data) => {
   userList = " ";
-  for (let user of data){
+  for (var user of data){
     userList += `<li class='user'>${user}</li><button id = ${user} class = "callButton" style="position:relative; float:left; height:3.5vh; background-color:green; font-size:12px; color:#fff; width:15%; display: inline-block;">&#xefba;</button><button class="hangupButton icofont icofont-close-circled" style="position:relative; float:left; height:3.5vh; background-color:red; font-size:12px; color:#fff; width:15%; display: inline-block;">Hangup</button>`;
   }
   userList.innerHTML = userList;
