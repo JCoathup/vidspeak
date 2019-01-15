@@ -161,7 +161,7 @@ let userList;
 socket.on('get users', (data) => {
   userList = " ";
   for (let user of data){
-    userList += `<li class='user'>${user}</li><button id = ${user} class = "callButton icofont icofont-phone-circle" style="position:relative; float:left; height:3.5vh; background-color:green; font-size:12px; color:#fff; width:15%; display: inline-block;">&#xefba;</button><button class="hangupButton icofont icofont-close-circled" style="position:relative; float:left; height:3.5vh; background-color:red; font-size:12px; color:#fff; width:15%; display: inline-block;">Hangup</button>`;
+    userList += `<li class='user'>${user}</li><button id = ${user} class = "callButton" style="position:relative; float:left; height:3.5vh; background-color:green; font-size:12px; color:#fff; width:15%; display: inline-block;">&#xefba;</button><button class="hangupButton icofont icofont-close-circled" style="position:relative; float:left; height:3.5vh; background-color:red; font-size:12px; color:#fff; width:15%; display: inline-block;">Hangup</button>`;
   }
   userList.innerHTML = userList;
   onlineUsers();
