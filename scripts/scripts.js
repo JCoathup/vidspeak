@@ -34,7 +34,7 @@ var constraints = {
 };
 _menu.addEventListener("click", function (){
   var _subMenu = document.querySelectorAll(".subMenu");
-  for (var item of _subMenu){
+  for (var i=0; i < _subMenu.length; i++){
     if (item.classList.contains("button--active")){
     // if menu already open then close main menu
     item.classList.remove("button--active");
