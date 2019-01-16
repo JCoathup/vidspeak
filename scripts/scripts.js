@@ -166,7 +166,7 @@ socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     userList += `<div id='userPanel'><li class='user'>${user}</li><button id = ${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
-                                                                  <button disabled class="hangupButton icofont icofont-check-circled" style="background-color:green;"></button>
+                                                                  <buttonclass="hangupButton icofont icofont-check-circled" style="background-color:green;"  disabled="true"></button>
                                                                   <button disabled class="icofont icofont-close-circled" style="background-color:red;"></button>
                                                                   <button disabled class="icofont icofont-exchange" style="background-color:orange;"></button>
                                                                   </div>`;
