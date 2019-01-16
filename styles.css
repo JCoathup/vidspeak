@@ -454,7 +454,7 @@ main {
 }
 #userList li {
   list-style-type: none;
-  width:70%;
+  width:60%;
   background-color: #666;
   color:#000;
   padding:2% 2% 2% 7%;
@@ -462,4 +462,14 @@ main {
   text-align:left;
   margin-bottom:1%;
   float:left;
+}
+#userPanel button {
+  padding:1% 1% 1% 1%;
+  width:7%;
+  height:auto;
+  display:inline-block;
+  float:left;
+  color:#fff;
+  position:relative;
+  font-size:32px;
 }

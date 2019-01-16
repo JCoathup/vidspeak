@@ -34,6 +34,10 @@ var constraints = {
 };
 
 document.addEventListener("click", function (e) {
+  //handles logout procedure
+  if (e.target && e.target.id == "signOut"){
+    logOut();
+  }
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
     for (var item of _subMenu){
@@ -161,7 +165,11 @@ var userList;
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
-    userList += `<li class='user'>${user}</li><button id = ${user} class = "callButton" style="position:relative; float:left; height:3.5vh; background-color:green; font-size:12px; color:#fff; width:15%; display: inline-block;">&#xefba;</button><button class="hangupButton icofont icofont-close-circled" style="position:relative; float:left; height:3.5vh; background-color:red; font-size:12px; color:#fff; width:15%; display: inline-block;">Hangup</button>`;
+    userList += `<div id='userPanel'><li class='user'>${user}</li><button id = ${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
+                                                                  <button class="hangupButton icofont icofont-check-circled" style="background-color:green;"></button>
+                                                                  <button class="icofont icofont-close-circled" style="background-color:red;"></button>
+                                                                  <button class="icofont icofont-exchange" style="background-color:orange;"></button>
+                                                                  </div>`;
   }
   userList.innerHTML = userList;
   onlineUsers();
@@ -393,6 +401,16 @@ function stop() {
   localvideo.classList.remove("localvideo--active");
   localvideo.classList.add("localvideo");
 }
-_menu.onclick = function() {
 
+function logOut () {
+  localvideo.srcObject = null;
+  chatName = null;
+  socket.emit('bye');
+  console.log(loggedOut);
+  loggedOut = `<div id ="loginText">Choose a username</div>
+                  <div id = "loginPanel">
+                     <input id = "username" placeholder = "connect"/>
+                     <button id = "signIn">Connect</button>
+                   </div>`;
+  _pallette.innerHTML = loggedOut;
 }

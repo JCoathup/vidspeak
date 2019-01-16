@@ -121,7 +121,6 @@ socket.on('create or join', function(room) {
     socket.emit(users);
     updateUsernames();
     connections.splice(connections.indexOf(socket), 1);
-    console.log(users);
   });
   socket.on('select user', function(data, callee){
     console.log(data);
@@ -196,6 +195,7 @@ socket.on('new user', function(data, callback){
 function updateUsernames(){
   socket.emit("gone home");
   io.sockets.emit('get users', users);
+  console.log("Users in room: ", users);
 }
 
 });
