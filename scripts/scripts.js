@@ -128,7 +128,9 @@ function menuChecker(e){
 ////////////////////////////////////////////////
 // user login and display online users
 ////////////////////////////////////////////////
-
+navigator.mediaDevices.getUserMedia = navigator.getUserMedia ||
+                              navigator.webkitGetUserMedia ||
+                              navigator.mozGetUserMedia;
 function startCam () {
   if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({video: true})
