@@ -151,7 +151,7 @@ function onlineUsers () {
   if (userList != undefined){
     _pallette.innerHTML = `<div id = "online">Online now:</div><br>
                            <div id = "userList">${userList}<div>`;
-    document.querySelector("#hangupButton").disabled = true;
+    document.querySelector(".hangupButton").disabled = true;
   }
 }
 
