@@ -32,21 +32,7 @@ var sdpConstraints = {
 var constraints = {
   video: true
 };
-_menu.addEventListener("click", function (){
-  var _subMenu = document.getElementsByClassName("subMenu");
-  for (var i=0; i < _subMenu.length; i++){
-    if (_subMenu[i].classList.contains("button--active")){
-    // if menu already open then close main menu
-    _subMenu[i].classList.remove("button--active");
-    _pallette.innerHTML = " ";
-    _navigation.classList.remove('nav--move');
-    _pallette.classList.remove('pallette--active');
-    }
-  }
-  //else menu is closed then open main menu
-  _menu.classList.toggle('menu--active');
-  _toolbox.classList.toggle('toolbox--active');
-})
+
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
