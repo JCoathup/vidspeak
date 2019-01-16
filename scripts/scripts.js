@@ -151,6 +151,7 @@ function onlineUsers () {
   if (userList != undefined){
     _pallette.innerHTML = `<div id = "online">Online now:</div><br>
                            <div id = "userList">${userList}<div>`;
+    document.querySelector("#hangupButton").disabled = true;
   }
 }
 
@@ -166,8 +167,8 @@ socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     userList += `<div id='userPanel'><li class='user'>${user}</li><button id = ${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
-                                                                  <button class="hangupButton icofont icofont-check-circled" style="background-color:green;" disabled="true"></button>
-                                                                  <button class="icofont icofont-close-circled" style="background-color:red;" disabled="true"></button>
+                                                                  <button class="icofont icofont-check-circled" style="background-color:green;" disabled="true"></button>
+                                                                  <button class="hangupButton icofont icofont-close-circled" style="background-color:red;" disabled="true"></button>
                                                                   <button class="icofont icofont-exchange" style="background-color:orange;" disabled="true"></button>
                                                                   </div>`;
   }
