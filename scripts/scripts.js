@@ -128,9 +128,9 @@ function openpallette(){
 function menuChecker(e){
   if (e.target && e.target.classList.contains("subMenu")) {
     var _subMenu = document.querySelectorAll(".subMenu");
-    for (var item of _subMenu){
-      if (item.classList.contains("button--active") && (item != e.target)){
-        item.classList.remove("button--active");
+    for (var k=0; k < _subMenu.length; k++){
+      if (_subMenu[k].classList.contains("button--active") && (item != e.target)){
+        _subMenu[k].classList.remove("button--active");
         e.target.classList.toggle("button--active");
         return;
       }
