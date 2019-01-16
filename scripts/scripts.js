@@ -36,10 +36,10 @@ var constraints = {
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
-    for (var j=0; j < _subMenu.length; j++){
-      if (_subMenu[j].classList.contains("button--active")){
+    for (var item of _subMenu){
+      if (item.classList.contains("button--active")){
       // if menu already open then close main menu
-      subMenu[j].classList.remove("button--active");
+      item.classList.remove("button--active");
       _pallette.innerHTML = " ";
       _navigation.classList.remove('nav--move');
       _pallette.classList.remove('pallette--active');
@@ -114,9 +114,9 @@ function openpallette(){
 function menuChecker(e){
   if (e.target && e.target.classList.contains("subMenu")) {
     var _subMenu = document.querySelectorAll(".subMenu");
-    for (var k=0; k < _subMenu.length; k++){
-      if (_subMenu[k].classList.contains("button--active") && (item != e.target)){
-        _subMenu[k].classList.remove("button--active");
+    for (var item of _subMenu){
+      if (item.classList.contains("button--active") && (item != e.target)){
+        item.classList.remove("button--active");
         e.target.classList.toggle("button--active");
         return;
       }
@@ -128,9 +128,7 @@ function menuChecker(e){
 ////////////////////////////////////////////////
 // user login and display online users
 ////////////////////////////////////////////////
-navigator.mediaDevices.getUserMedia = navigator.getUserMedia ||
-                              navigator.webkitGetUserMedia ||
-                              navigator.mozGetUserMedia;
+
 function startCam () {
   if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({video: true})
