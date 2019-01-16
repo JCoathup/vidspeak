@@ -473,3 +473,6 @@ main {
   position:relative;
   font-size:32px;
 }
+#userPanel button:disabled {
+  background-color:#666
+}
