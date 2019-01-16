@@ -32,7 +32,9 @@ var sdpConstraints = {
 var constraints = {
   video: true
 };
-
+_menu.addEventListener("click", function (){
+  alert("IOS");
+})
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
