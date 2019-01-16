@@ -35,9 +35,9 @@ var constraints = {
 _menu.addEventListener("click", function (){
   var _subMenu = document.getElementsByClassName("subMenu");
   for (var i=0; i < _subMenu.length; i++){
-    if (item.classList.contains("button--active")){
+    if (_subMenu[i].classList.contains("button--active")){
     // if menu already open then close main menu
-    item.classList.remove("button--active");
+    _subMenu[i].classList.remove("button--active");
     _pallette.innerHTML = " ";
     _navigation.classList.remove('nav--move');
     _pallette.classList.remove('pallette--active');
@@ -50,10 +50,10 @@ _menu.addEventListener("click", function (){
 document.addEventListener("click", function (e) {
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
-    for (var item of _subMenu){
-      if (item.classList.contains("button--active")){
+    for (var j=0; j < _subMenu.length; j++){
+      if (_subMenu[j].classList.contains("button--active")){
       // if menu already open then close main menu
-      item.classList.remove("button--active");
+      subMenu[j].classList.remove("button--active");
       _pallette.innerHTML = " ";
       _navigation.classList.remove('nav--move');
       _pallette.classList.remove('pallette--active');
