@@ -407,9 +407,7 @@ function hangup() {
 }
 
 function handleRemoteHangup() {
-  let hangupButton1 = e.target.previousElementSibling;
-  let hangupButton = hangupButton1.previousElementSibling;
-  removeDuringCallButtons(hangupButton.id);
+  removeDuringCallButtons();
   console.log('Session terminated.');
   stop();
   isInitiator = false;
@@ -456,26 +454,26 @@ function replaceCallButtons () {
   }
 }
 function addCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let answerButton = document.querySelector('.userPanel button.answerButton');
+  let hangupButton = document.querySelector('.userPanel button.hangupButton');
   answerButton.style.display = "inline-block";
   hangupButton.style.display = "inline-block";
 }
 function removeCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let answerButton = document.querySelector('.userPanel button.answerButton');
+  let hangupButton = document.querySelector('.userPanel button.hangupButton');
   answerButton.style.display = "none";
   hangupButton.style.display = "none";
 }
 function duringCallButtons (room) {
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
+  let hangupButton = document.querySelector('.userPanel button.hangupButton');
+  let busyButton = document.querySelector('.userPanel button.busyButton');
   hangupButton.style.display = "inline-block";
   busyButton.style.display = "inline-block";
 }
-function removeDuringCallButtons (room) {
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
+function removeDuringCallButtons () {
+  let hangupButton = document.querySelector('.userPanel button.hangupButton');
+  let busyButton = document.querySelector('.userPanel button.busyButton');
   hangupButton.style.display = "none";
   busyButton.style.display = "none";
 }
