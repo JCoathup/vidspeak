@@ -34,6 +34,14 @@ var constraints = {
 };
 
 document.addEventListener("click", function (e) {
+  //handles end call procedure
+  if (e.target && e.target.classList.contains("hangupButton")){
+    let hangupButton1 = e.target.previousElementSibling;
+    let hangupButton = hangupButton1.previousElementSibling;
+    removeDuringCallButtons(hangupButton.id);
+    socket.emit('ended call');
+    stop();
+  }
   //handles logout procedure
   if (e.target && e.target.id == "signOut"){
     logOut();
@@ -82,9 +90,6 @@ document.addEventListener("click", function (e) {
     _pallette.innerHTML = " ";
   }
 }
-  if (e.target && e.target.id == "youtube"){
-    menuChecker(e);
-  }
   var _signIn = document.querySelector("#signIn");
   var _username = document.querySelector("#username");
   //var chatName;
@@ -151,7 +156,6 @@ function onlineUsers () {
   if (userList != undefined){
     _pallette.innerHTML = `<div id = "online">Online now:</div><br>
                            <div id = "userList">${userList}<div>`;
-    document.querySelector(".hangupButton").disabled = true;
   }
 }
 
@@ -166,22 +170,24 @@ var userList;
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
-    userList += `<div id='userPanel'><li class='user'>${user}</li><button id = ${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
-                                                                  <button class="icofont icofont-check-circled" style="background-color:green;" disabled="true"></button>
-                                                                  <button class="hangupButton icofont icofont-close-circled" style="background-color:red;" disabled="true"></button>
-                                                                  <button class="icofont icofont-exchange" style="background-color:orange;" disabled="true"></button>
+    userList += `<div class="userPanel"><li class='user'>${user}</li><button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
+                                                                  <button class="answerButton icofont icofont-check-circled" style="background-color:green;" ></button>
+                                                                  <button class="hangupButton icofont icofont-close-circled" style="background-color:red;" ></button>
+                                                                  <button class="busyButton icofont icofont-exchange" style="background-color:orange;" ></button>
                                                                   </div>`;
   }
+
   userList.innerHTML = userList;
   onlineUsers();
 });
 
 document.addEventListener("click", function (e) {
-  if (e.target && e.target.className == "callButton"){
+  if (e.target && e.target.classList.contains("callButton")){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
     room = chatName;
-
+    removeCallButtons();
+    duringCallButtons(e.target.id);
     //sendMessage('attempting call', room);
     socket.emit('create or join', room);
     console.log('Attempted to create or  join room', room);
@@ -195,9 +201,19 @@ document.addEventListener("click", function (e) {
       );
     }
   }
+  if (e.target && e.target.classList.contains('answerButton')){
+      let callroom = e.target.previousElementSibling;
+      socket.emit('create or join', callroom.id);
+      gotStream(localStream);
+      removeCallAndRejectButtons(callroom.id);
+      duringCallButtons(callroom.id);
+  }
 })
 
 // socket listeners
+socket.on('call over', function(){
+  stop();
+})
 socket.on('created', function(room) {
   console.log('Created room ' + room);
 });
@@ -223,9 +239,13 @@ socket.on('log', function(array) {
 
 socket.on('is calling', function(room){
   console.log('invite to join room ', room);
-  //isInitiator = false;
-    socket.emit('create or join', room);
-    gotStream(localStream);
+  removeCallButtons();
+  addCallAndRejectButtons(room);
+  //  socket.emit('create or join', room);
+    console.log("one", room);
+  //  gotStream(localStream);
+    console.log("two", localStream);
+
 })
 // This client receives a message from server
 socket.on('message', function(message) {
@@ -387,6 +407,9 @@ function hangup() {
 }
 
 function handleRemoteHangup() {
+  let hangupButton1 = e.target.previousElementSibling;
+  let hangupButton = hangupButton1.previousElementSibling;
+  removeDuringCallButtons(hangupButton.id);
   console.log('Session terminated.');
   stop();
   isInitiator = false;
@@ -401,6 +424,9 @@ function stop() {
   remotevideo.classList.add("remotevideo");
   localvideo.classList.remove("localvideo--active");
   localvideo.classList.add("localvideo");
+  replaceCallButtons();
+  removeCallAndRejectButtons();
+  removeDuringCallButtons();
 }
 
 function logOut () {
@@ -414,4 +440,42 @@ function logOut () {
                      <button id = "signIn">Connect</button>
                    </div>`;
   _pallette.innerHTML = loggedOut;
+}
+
+//handles buttons before, during and after calls
+function removeCallButtons () {
+  let callButton = document.querySelectorAll('.userPanel button.callButton')
+  for (let x= 0; x< callButton.length; x++){
+    callButton[x].style.display = "none";
+  }
+}
+function replaceCallButtons () {
+  let callButton = document.querySelectorAll('.userPanel button.callButton')
+  for (let x= 0; x< callButton.length; x++){
+    callButton[x].style.display = "inline-block";
+  }
+}
+function addCallAndRejectButtons (room) {
+  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  answerButton.style.display = "inline-block";
+  hangupButton.style.display = "inline-block";
+}
+function removeCallAndRejectButtons (room) {
+  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  answerButton.style.display = "none";
+  hangupButton.style.display = "none";
+}
+function duringCallButtons (room) {
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
+  hangupButton.style.display = "inline-block";
+  busyButton.style.display = "inline-block";
+}
+function removeDuringCallButtons (room) {
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
+  hangupButton.style.display = "none";
+  busyButton.style.display = "none";
 }

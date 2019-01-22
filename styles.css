@@ -463,16 +463,19 @@ main {
   margin-bottom:1%;
   float:left;
 }
-#userPanel button {
+.userPanel button {
   padding:1% 1% 1% 1%;
   width:7%;
   height:auto;
   display:inline-block;
-  float:left;
+  float:right;
   color:#fff;
   position:relative;
   font-size:32px;
 }
-#userPanel button:disabled {
+.userPanel button:disabled {
   background-color:#666
+}
+.userPanel button.hangupButton, .userPanel button.busyButton, .userPanel button.answerButton   {
+  display:none;
 }
