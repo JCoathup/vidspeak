@@ -454,26 +454,26 @@ function replaceCallButtons () {
   }
 }
 function addCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('.userPanel button.answerButton');
-  let hangupButton = document.querySelector('.userPanel button.hangupButton');
+  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
   answerButton.style.display = "inline-block";
   hangupButton.style.display = "inline-block";
 }
 function removeCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('.userPanel button.answerButton');
-  let hangupButton = document.querySelector('.userPanel button.hangupButton');
+  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
   answerButton.style.display = "none";
   hangupButton.style.display = "none";
 }
 function duringCallButtons (room) {
-  let hangupButton = document.querySelector('.userPanel button.hangupButton');
-  let busyButton = document.querySelector('.userPanel button.busyButton');
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
   hangupButton.style.display = "inline-block";
   busyButton.style.display = "inline-block";
 }
-function removeDuringCallButtons () {
-  let hangupButton = document.querySelector('.userPanel button.hangupButton');
-  let busyButton = document.querySelector('.userPanel button.busyButton');
+function removeDuringCallButtons (room) {
+  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
+  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
   hangupButton.style.display = "none";
   busyButton.style.display = "none";
 }
