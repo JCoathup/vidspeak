@@ -1,3 +1,13 @@
+let socket = io.connect();
+let chatName = null;
+let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
+let loggedOut = `<div id ="loginText">Choose a username</div>
+                  <div id = "loginPanel">
+                     <input id = "username" placeholder = "connect"/>
+                     <button id = "signIn">Connect</button>
+                   </div>`;
+let _localvideo = document.querySelector("#localvideo");
+
 document.addEventListener("click", function(e){
   if (e.target && e.target.id == "login") {
     openLightBox();
@@ -9,8 +19,40 @@ document.addEventListener("click", function(e){
     closeLightBox();
   }
   if (e.target && e.target.id == "fade") {
-    console.log("test");
     closeLightBox();
+  }
+  if (e.target && e.target.id == "login"){
+    let _light = document.querySelector('#light');
+    if(chatName == null){
+      _light.innerHTML = loggedOut;
+    }
+    else {
+      _light.innerHTML = loggedIn;
+    }
+  }
+  if (e.target && e.target.id == "signIn"){
+    let _username = document.querySelector("#username");
+    let _signIn = document.querySelector("#signIn");
+    e.preventDefault();
+    if (!_username.value == " "){
+      // check for duplicate user
+      socket.on('duplicate username', function (data) {
+        if (data == true) {
+          _username.value="";
+          _username.placeholder = "Username taken!";
+          return;
+        }
+      });
+      //no duplicate found... continue
+      socket.emit('new user', _username.value, function() {
+        document.querySelector("#loginPanel").innerHTML = loggedIn;
+        chatName = _username.value;
+        startCam();
+      });
+    }
+  }
+  if (e.target && e.target.id == "signOut"){
+    logOut();
   }
 })
 function openLightBox () {
@@ -21,14 +63,33 @@ function closeLightBox () {
   document.getElementById('light').style.display='none';
   document.getElementById('fade').style.display='none';
 }
-/* var socket = io.connect();
-var _localvideo = document.querySelector("#localvideo");
+function logOut () {
+  let _light = document.querySelector('#light');
+  localvideo.srcObject = null;
+  chatName = null;
+  socket.emit('bye');
+  _light.innerHTML = loggedOut;
+}
+function startCam () {
+  if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({video: true})
+    .then(function(stream) {
+      _localvideo.srcObject = stream;
+      localStream = stream;
+    })
+    .catch(function(error) {
+      console.log("Something went wrong!");
+    });
+  }
+}
+/*
+
 var _remotevideo = document.querySelector("#remotevideo");
 var _menu = document.querySelector("#menu");
 var _toolbox = document.querySelector(".toolbox");
 var _pallette = document.querySelector(".pallette");
 var _navigation = document.querySelector(".navigation");
-var chatName = null;
+
 var loggedIn; var loggedOut;
 var room;
 
@@ -66,9 +127,7 @@ document.addEventListener("click", function (e) {
     stop();
   }
   //handles logout procedure
-  if (e.target && e.target.id == "signOut"){
-    logOut();
-  }
+
   if (e.target && e.target.id == "menu"){
     var _subMenu = document.querySelectorAll(".subMenu");
     for (var item of _subMenu){
@@ -84,26 +143,7 @@ document.addEventListener("click", function (e) {
     _menu.classList.toggle('menu--active');
     _toolbox.classList.toggle('toolbox--active');
   }
-  if (e.target && e.target.id == "login"){
-    menuChecker(e);
-    loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
-    loggedOut = `<div id ="loginText">Choose a username</div>
-                    <div id = "loginPanel">
-                       <input id = "username" placeholder = "connect"/>
-                       <button id = "signIn">Connect</button>
-                     </div>`;
-    if (_pallette.classList.contains("pallette--active")){
-      if(chatName == null){
-        _pallette.innerHTML = loggedOut;
-      }
-      else {
-        _pallette.innerHTML = loggedIn;
-      }
-    }
-    else {
-      _pallette.innerHTML = " ";
-    }
-  }
+
   if (e.target && e.target.id == "users"){
         menuChecker(e);
   if (_pallette.classList.contains("pallette--active")){
@@ -116,25 +156,6 @@ document.addEventListener("click", function (e) {
   var _signIn = document.querySelector("#signIn");
   var _username = document.querySelector("#username");
   //var chatName;
-if (e.target && e.target.id == "signIn"){
-  e.preventDefault();
-  if (!_username.value == " "){
-    // check for duplicate user
-    socket.on('duplicate username', function (data) {
-      if (data == true) {
-        _username.value="";
-        _username.placeholder = "Username taken!";
-        return;
-      }
-    });
-    //no duplicate found... continue
-    socket.emit('new user', _username.value, function() {
-      document.querySelector("#loginPanel").innerHTML = loggedIn;
-      chatName = _username.value;
-      startCam();
-    });
-  }
-}
 
 })
 
@@ -448,19 +469,6 @@ function stop() {
   replaceCallButtons();
   removeCallAndRejectButtons();
   removeDuringCallButtons();
-}
-
-function logOut () {
-  localvideo.srcObject = null;
-  chatName = null;
-  socket.emit('bye');
-  console.log(loggedOut);
-  loggedOut = `<div id ="loginText">Choose a username</div>
-                  <div id = "loginPanel">
-                     <input id = "username" placeholder = "connect"/>
-                     <button id = "signIn">Connect</button>
-                   </div>`;
-  _pallette.innerHTML = loggedOut;
 }
 
 //handles buttons before, during and after calls
