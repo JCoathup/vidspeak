@@ -19,7 +19,7 @@ function openLightBox () {
 }
 function closeLightBox () {
   document.getElementById('light').style.display='none';
-  document.getElementById('fade').style.display='none'
+  document.getElementById('fade').style.display='none';
 }
 /* var socket = io.connect();
 var _localvideo = document.querySelector("#localvideo");
