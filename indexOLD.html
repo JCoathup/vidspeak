@@ -7,16 +7,24 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a><div id="close">X</div></div>
-  <div id="fade" class="black_overlay"></div>
   <main>
     <div id="largeVideo"><video id="localvideo" class="localvideo" autoplay></video></div>
     <div id="smallVideo"><video id="remotevideo" class="remotevideo" autoplay></video><div>
   </main>
-  <nav>
-    <button id="login" title="Login" class="toolbox-item icofont icofont-login"></button><button id="users" title="users" class="icofont icofont-people"></button>
-  </nav>
-
+  <div class="pallette"></div>
+  <nav class="navigation">
+  <div id="menu" class="menu">
+  <button class="icofont icofont-navigation-menu menu-icon"></button>
+</div>
+<ul class="toolbox">
+  <li>
+    <button id="login" title="Login" class="toolbox-item icofont icofont-login subMenu login"></button>
+  </li>
+  <li>
+    <button id="users" title="users" class="toolbox-item icofont icofont-people subMenu users"></button>
+  </li>
+</ul>
+</nav>
 
   <script src="/socket.io/socket.io.js"> </script>
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>

@@ -65,7 +65,20 @@
     width: 1.28571429em;
     text-align: center;
 }
+.icofont-login {
+  color: #5fc7ea;
+}
 
+.icofont-login:before {
+	content: "\f053";
+}
+.icofont-logout {
+  color: #5fc7eb;
+}
+
+.icofont-logout:before {
+	content: "\f054";
+}
 /*Custom list icons*/
 .icofont-ul {
     padding-left: 0;
@@ -81,29 +94,6 @@
     width: 2.14285714em;
     top: .14285714em;
     text-align: center;
-}
-.icofont-download:before {
-  margin:0 auto;
-  content: "\efdd";
-}
-.icofont-navigation-menu:before {
-	content: "\f080";
-}
-.icofont-social-facebook:before {
-  margin:0 auto;
-	content: "\ee08";
-}
-.icofont-google-plus:before {
-  margin:0 auto;
-	content: "\ee11";
-}
-.icofont-social-twitter:before {
-  margin:0 auto;
-	content: "\ee34";
-}
-.icofont-social-whatsapp:before {
-  margin:0 auto;
-	content: "\f135";
 }
 .icofont-close-circled:before {
   margin:0 auto;
@@ -121,108 +111,12 @@
   margin:0 auto;
   content: "\efac";
 }
-.icofont-share{
-  color:red;
-}
-
-.icofont-share:before {
-	content: "\f0ca";
-}
-.icofont-delete-alt:before {
-	content: "\eea9";
-}
-
-.icofont-downloaded:before {
-	content: "\ef08";
-}
-a#download {
-  width:100px;
-  height:100px;
-}
-.icofont-login {
-  color: #5fc7ea;
-}
-
-.icofont-login:before {
-	content: "\f053";
-}
-.icofont-logout {
-  color: #5fc7ea;
-}
-
-.icofont-logout:before {
-	content: "\f054";
-}
-.icofont-email{
-  color:#000;
-}
-.icofont-email:before{
-  margin:0 auto;
-  content:"\efe4";
-}
-.icofont-eraser-alt{
-  color: #68e6ac;
-}
-
-.icofont-eraser-alt:before {
-	content: "\eeab";
-}
-
-.icofont-youtube {
-  color: red;
-}
-
-.icofont-youtube:before {
-	content: "\f138";
-}
-
 .icofont-people{
     color:#e68568;
 }
 
 .icofont-people:before {
 	content: "\ede1";
-}
-
-.icofont-arrow-up:before {
-	content: "\eb1c";
-}
-
-.icofont-delete-alt {
-  color:#666;
-}
-
-.icofont-delete-alt:before {
-	content: "\eea9";
-}
-
-/*Animation*/
-.icofont-rotate {
-    display: inline-block;
-    -webkit-animation: icofont-rotate 2s infinite linear;
-    animation: icofont-rotate 2s infinite linear
-}
-
-@-webkit-keyframes icofont-rotate {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg)
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg)
-    }
-}
-
-@keyframes icofont-rotate {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg)
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg)
-    }
 }
 html {
   overflow:hidden;
@@ -237,143 +131,7 @@ body {
   padding:0;
   width:100%;
   height:100%;
-}
-nav {
-  position: fixed;
-	top: 0;
-	left: 0;
-	width: 10%;
-  min-width:65px;
-	backface-visibility: hidden;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.nav--move{
-  left:50vw;
-}
-.pallette {
-  background-color:#272b2e;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 0;
-  backface-visibility: hidden;
-  height:100vh;
-  transition: 0.1s ease;
-}
-button{
-  display: flex;
-  text-align:center;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	top: 0;
-	left: 0;
-	text-decoration: none;
-	font-size: 64px;
-	background: #2b3033;
-	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border:0;
-}
-.pallette--active {
-  width:50vw;
-  color:#999;
-}
-.toolbox {
-  list-style-type:none;
-  display:flex;
-  flex-flow:column wrap;
-  flex-direction:column;
-  height:85vh;
-  padding:0;
-  margin:0;
-  transform: translate(0, -100vh);
-	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.menuItems {
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform: translate(-120%,0);
-}
-
-.menuItems--active {
-
-	transform: translate(0, 0);
-}
-.toolbox--active {
-	transform: translate(0, 0);
-}
-
-li {
-  position:relative;
-  flex-grow:1;
-  text-align:center;
-}
-
-.menu {
-  position:relative;
-	height: 15vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: #2b3033;
-	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index:2147483648;
-}
-
-.menu:hover {
-	background: #272b2e;
-}
-
-.menu-icon {
-	position: relative;
-	height: 2px;
-	width: 40px;
-	background: white;
-}
-
-.menu-icon:before {
-	content: "";
-	position: absolute;
-	top: -10px;
-	left: 0;
-	height: 2px;
-	width: 100%;
-	background: white;
-}
-
-.menu-icon:after {
-	content: "";
-	position: absolute;
-	top: 10px;
-	left: 0;
-	height: 2px;
-	width: 100%;
-	background: white;
-}
-
-.menu-icon, .menu-icon:before, .menu-icon:after {
-	will-change: transform;
-	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.menu--active .menu-icon {
-	transform: rotate(90deg);
-}
-
-.menu--active .menu-icon:before {
-	transform: rotate(-45deg) translate(-7px, -7px) scaleX(0.7);
-}
-
-.menu--active .menu-icon:after {
-	transform: rotate(45deg) translate(-7px, 7px) scaleX(0.7);
-}
-
-body {
-  overflow:hidden;
-  margin:0;
-  padding:0;
+  font-family: helvetica;
 }
 main {
   width:100vw;
@@ -463,19 +221,58 @@ main {
   margin-bottom:1%;
   float:left;
 }
-.userPanel button {
-  padding:1% 1% 1% 1%;
-  width:7%;
-  height:auto;
-  display:inline-block;
-  float:right;
-  color:#fff;
+li {
   position:relative;
+  flex-grow:1;
+  text-align:center;
+}
+nav {
+  position:absolute;
+  bottom:0;
+  width:auto;
+}
+button {
+  font-size:64px;
+  margin:0;
+  display:inline-block;
+  border:none;
+  background-color:#2b3033;
+}
+
+.black_overlay{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
+	z-index:1001;
+	-moz-opacity: 0.8;
+	opacity:.80;
+	filter: alpha(opacity=80);
+}
+
+.white_content {
+	display: none;
+	position: absolute;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	padding: 16px;
+	background-color: white;
+	z-index:1002;
+	overflow: auto;
+}
+#close {
   font-size:32px;
-}
-.userPanel button:disabled {
-  background-color:#666
-}
-.userPanel button.hangupButton, .userPanel button.busyButton, .userPanel button.answerButton   {
-  display:none;
+  line-height:32px;
+  right:0;
+  top:0;
+  position:absolute;
+  padding:1%;
+  background-color:#ededed;
+  color:#000;
+  vertical-align: middle;
 }

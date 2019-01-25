@@ -1,0 +1,481 @@
+/**
+ * @package IcoFont by ThemeHunt - https://themehunt.com
+ * @version 1.0.0 Beta
+ * @author IcoFont http://icofont.com
+ * @copyright Copyright (c) 2018 IcoFont
+ * @license - http://icofont.com/license/
+*/
+
+@font-face {
+    font-family: 'icofont';
+    src: url('fonts/icofont.eot?v=1.0.0-beta');
+    src: url('fonts/icofont.eot?v=1.0.0-beta#iefix') format('embedded-opentype'),
+    url('fonts/icofont.ttf?v=1.0.0-beta') format('truetype'),
+    url('fonts/icofont.woff?v=1.0.0-beta') format('woff'),
+    url('fonts/icofont.svg?v=1.0.0-beta#icofont') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icofont {
+    font-family: 'IcoFont' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*Font size*/
+.icofont-lg {
+    font-size: 1.33333333em;
+    line-height: .75em;
+    vertical-align: -15%
+}
+
+.icofont-2x {
+    font-size: 2em
+}
+
+.icofont-3x {
+    font-size: 3em
+}
+
+.icofont-4x {
+    font-size: 4em
+}
+
+.icofont-5x {
+    font-size: 5em
+}
+
+.icofont-fw {
+    display: inline-block;
+    width: 1.28571429em;
+    text-align: center
+}
+
+/*Fixed Width Icons*/
+.icofont-fw {
+    width: 1.28571429em;
+    text-align: center;
+}
+
+/*Custom list icons*/
+.icofont-ul {
+    padding-left: 0;
+    margin-left: 2.14285714em;
+    list-style-type: none;
+}
+.icofont-ul>li {
+    position: relative;
+}
+.icofont-li {
+    position: absolute;
+    left: -2.14285714em;
+    width: 2.14285714em;
+    top: .14285714em;
+    text-align: center;
+}
+.icofont-download:before {
+  margin:0 auto;
+  content: "\efdd";
+}
+.icofont-navigation-menu:before {
+	content: "\f080";
+}
+.icofont-social-facebook:before {
+  margin:0 auto;
+	content: "\ee08";
+}
+.icofont-google-plus:before {
+  margin:0 auto;
+	content: "\ee11";
+}
+.icofont-social-twitter:before {
+  margin:0 auto;
+	content: "\ee34";
+}
+.icofont-social-whatsapp:before {
+  margin:0 auto;
+	content: "\f135";
+}
+.icofont-close-circled:before {
+  margin:0 auto;
+  content: "\efb2";
+}
+.icofont-phone-circle:before {
+  margin:0 auto;
+  content: "\f09b";
+}
+.icofont-exchange:before {
+  margin:0 auto;
+  content: "\efe9";
+}
+.icofont-check-circled:before {
+  margin:0 auto;
+  content: "\efac";
+}
+.icofont-share{
+  color:red;
+}
+
+.icofont-share:before {
+	content: "\f0ca";
+}
+.icofont-delete-alt:before {
+	content: "\eea9";
+}
+
+.icofont-downloaded:before {
+	content: "\ef08";
+}
+a#download {
+  width:100px;
+  height:100px;
+}
+.icofont-login {
+  color: #5fc7ea;
+}
+
+.icofont-login:before {
+	content: "\f053";
+}
+.icofont-logout {
+  color: #5fc7ea;
+}
+
+.icofont-logout:before {
+	content: "\f054";
+}
+.icofont-email{
+  color:#000;
+}
+.icofont-email:before{
+  margin:0 auto;
+  content:"\efe4";
+}
+.icofont-eraser-alt{
+  color: #68e6ac;
+}
+
+.icofont-eraser-alt:before {
+	content: "\eeab";
+}
+
+.icofont-youtube {
+  color: red;
+}
+
+.icofont-youtube:before {
+	content: "\f138";
+}
+
+.icofont-people{
+    color:#e68568;
+}
+
+.icofont-people:before {
+	content: "\ede1";
+}
+
+.icofont-arrow-up:before {
+	content: "\eb1c";
+}
+
+.icofont-delete-alt {
+  color:#666;
+}
+
+.icofont-delete-alt:before {
+	content: "\eea9";
+}
+
+/*Animation*/
+.icofont-rotate {
+    display: inline-block;
+    -webkit-animation: icofont-rotate 2s infinite linear;
+    animation: icofont-rotate 2s infinite linear
+}
+
+@-webkit-keyframes icofont-rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg)
+    }
+}
+
+@keyframes icofont-rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg)
+    }
+}
+html {
+  overflow:hidden;
+  width:100%;
+  height:100%;
+}
+body {
+  margin:0;
+  position:fixed;
+  background-color:#000;
+  overflow:hidden;
+  padding:0;
+  width:100%;
+  height:100%;
+}
+nav {
+  position: fixed;
+	top: 0;
+	left: 0;
+	width: 10%;
+  min-width:65px;
+	backface-visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.nav--move{
+  left:50vw;
+}
+.pallette {
+  background-color:#272b2e;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 0;
+  backface-visibility: hidden;
+  height:100vh;
+  transition: 0.1s ease;
+}
+button{
+  display: flex;
+  text-align:center;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	text-decoration: none;
+	font-size: 64px;
+	background: #2b3033;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border:0;
+}
+.pallette--active {
+  width:50vw;
+  color:#999;
+}
+.toolbox {
+  list-style-type:none;
+  display:flex;
+  flex-flow:column wrap;
+  flex-direction:column;
+  height:85vh;
+  padding:0;
+  margin:0;
+  transform: translate(0, -100vh);
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.menuItems {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translate(-120%,0);
+}
+
+.menuItems--active {
+
+	transform: translate(0, 0);
+}
+.toolbox--active {
+	transform: translate(0, 0);
+}
+
+li {
+  position:relative;
+  flex-grow:1;
+  text-align:center;
+}
+
+.menu {
+  position:relative;
+	height: 15vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #2b3033;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index:2147483648;
+}
+
+.menu:hover {
+	background: #272b2e;
+}
+
+.menu-icon {
+	position: relative;
+	height: 2px;
+	width: 40px;
+	background: white;
+}
+
+.menu-icon:before {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: 0;
+	height: 2px;
+	width: 100%;
+	background: white;
+}
+
+.menu-icon:after {
+	content: "";
+	position: absolute;
+	top: 10px;
+	left: 0;
+	height: 2px;
+	width: 100%;
+	background: white;
+}
+
+.menu-icon, .menu-icon:before, .menu-icon:after {
+	will-change: transform;
+	transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.menu--active .menu-icon {
+	transform: rotate(90deg);
+}
+
+.menu--active .menu-icon:before {
+	transform: rotate(-45deg) translate(-7px, -7px) scaleX(0.7);
+}
+
+.menu--active .menu-icon:after {
+	transform: rotate(45deg) translate(-7px, 7px) scaleX(0.7);
+}
+
+body {
+  overflow:hidden;
+  margin:0;
+  padding:0;
+}
+main {
+  width:100vw;
+  height:100vh;
+}
+.localvideo {
+  position:relative;
+  width:100vw;
+  height:100vh;
+  object-fit: fill;
+}
+.remotevideo {
+  width:25vw;
+  height: 25vh;
+  position:absolute;
+  top: 2vh;
+  right:2vw;
+  object-fit: fill;
+}
+
+.remotevideo--active {
+  position:relative;
+  width:100vw;
+  height:100vh;
+  object-fit: fill;
+}
+.localvideo--active{
+  width:25vw;
+  height: 25vh;
+  position:absolute;
+  top: 2vh;
+  right:2vw;
+  object-fit: fill;
+  z-index:10;
+}
+#remote {
+  width: 30vw;
+  height:auto;
+}
+#loginPanel {
+  color:#ededed;
+  font-size: 1.5em;
+  display:flex;
+  flex-direction:row;
+  margin:2% auto;
+  width:90%;
+}
+#username {
+  background-color:#fff!important;
+  color:#333;
+  font-size: 1.5em;
+  flex:2;
+}
+#signIn, #signOut {
+  color:#fff;
+  font-size:12px;
+  padding:3%;
+  flex:1;
+  position: relative;
+}
+#signIn {
+    background-color: green;
+}
+#signOut {
+    background-color: red;
+}
+#loginText {
+  margin: 1vh auto;
+  width:90%;
+  font-size:1.25em;
+}
+
+#online {
+  color:green;
+  font-size: 1em;
+  margin-top: 5vh;
+  margin-left:1vw;
+}
+#userList li {
+  list-style-type: none;
+  width:60%;
+  background-color: #666;
+  color:#000;
+  padding:2% 2% 2% 7%;
+  font-size:1em;
+  text-align:left;
+  margin-bottom:1%;
+  float:left;
+}
+.userPanel button {
+  padding:1% 1% 1% 1%;
+  width:7%;
+  height:auto;
+  display:inline-block;
+  float:right;
+  color:#fff;
+  position:relative;
+  font-size:32px;
+}
+.userPanel button:disabled {
+  background-color:#666
+}
+.userPanel button.hangupButton, .userPanel button.busyButton, .userPanel button.answerButton   {
+  display:none;
+}

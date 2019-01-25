@@ -1,4 +1,27 @@
-var socket = io.connect();
+document.addEventListener("click", function(e){
+  if (e.target && e.target.id == "login") {
+    openLightBox();
+  }
+  if (e.target && e.target.id == "users") {
+    openLightBox();
+  }
+  if (e.target && e.target.id == "close") {
+    closeLightBox();
+  }
+  if (e.target && e.target.id == "fade") {
+    console.log("test");
+    closeLightBox();
+  }
+})
+function openLightBox () {
+  document.getElementById('light').style.display='block';
+  document.getElementById('fade').style.display='block';
+}
+function closeLightBox () {
+  document.getElementById('light').style.display='none';
+  document.getElementById('fade').style.display='none'
+}
+/* var socket = io.connect();
 var _localvideo = document.querySelector("#localvideo");
 var _remotevideo = document.querySelector("#remotevideo");
 var _menu = document.querySelector("#menu");
@@ -477,3 +500,4 @@ function removeDuringCallButtons (room) {
   hangupButton.style.display = "none";
   busyButton.style.display = "none";
 }
+*/
