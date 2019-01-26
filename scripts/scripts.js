@@ -2,8 +2,10 @@ let socket = io.connect();
 let chatName = null;
 let loggedOut = `<div id = "loginPanel">
                      <div id ="loginText">Choose a username</div>
+                     <div id="inputFields">
                      <input id = "username" placeholder = "connect"/>
                      <button id = "signIn">Connect</button>
+                     </div>
                    </div>`;
 let _localvideo = document.querySelector("#localvideo");
 let localStream;

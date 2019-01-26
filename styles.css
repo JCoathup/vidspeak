@@ -174,10 +174,13 @@ main {
 #loginPanel {
   color:#ededed;
   font-size: 1.5em;
-  display:flex;
-  flex-direction:row;
   margin:2% auto;
   width:90%;
+}
+#inputFields {
+  display:flex;
+  flex-direction: row;
+  width:100%;
 }
 #username {
   background-color:#fff!important;
@@ -194,19 +197,21 @@ main {
 }
 #signIn {
     background-color: green;
+    font-size:2em;
 }
 #signOut {
     background-color: red;
 }
 #loginText {
-  margin: 1vh auto;
-  width:90%;
-  font-size:1.25em;
+  margin: 1vh 0;
+  width:100%;
+  font-size:2em;
+  color:#666;
 }
 
 #online {
   color:green;
-  font-size: 1em;
+  font-size: 2em;
   margin-top: 5vh;
   margin-left:1vw;
 }
@@ -258,9 +263,10 @@ button {
 	position: absolute;
 	top: 25%;
 	left: 5%;
-	width: 90%;
-	height: 50%;
-	padding: 16px;
+	width: 86%;
+  height:auto;
+	max-height: 50%;
+	padding: 2%;
 	background-color: white;
 	z-index:1002;
 	overflow: auto;
