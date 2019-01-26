@@ -1,12 +1,12 @@
 let socket = io.connect();
 let chatName = null;
-let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
-let loggedOut = `<div id ="loginText">Choose a username</div>
-                  <div id = "loginPanel">
+let loggedOut = `<div id = "loginPanel">
+                     <div id ="loginText">Choose a username</div>
                      <input id = "username" placeholder = "connect"/>
                      <button id = "signIn">Connect</button>
                    </div>`;
 let _localvideo = document.querySelector("#localvideo");
+let localStream;
 
 document.addEventListener("click", function(e){
   if (e.target && e.target.id == "login") {
@@ -23,6 +23,7 @@ document.addEventListener("click", function(e){
   }
   if (e.target && e.target.id == "login"){
     let _light = document.querySelector('#light');
+    let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
     if(chatName == null){
       _light.innerHTML = loggedOut;
     }
@@ -45,14 +46,20 @@ document.addEventListener("click", function(e){
       });
       //no duplicate found... continue
       socket.emit('new user', _username.value, function() {
-        document.querySelector("#loginPanel").innerHTML = loggedIn;
         chatName = _username.value;
+        let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
+        document.querySelector("#loginPanel").innerHTML = loggedIn;
         startCam();
       });
     }
   }
   if (e.target && e.target.id == "signOut"){
     logOut();
+  }
+  if (e.target && e.target.id == "users"){
+    let _light = document.querySelector('#light');
+    _light.innerHTML = `<div id = "onlineList"></div>`;
+    onlineUsers();
   }
 })
 function openLightBox () {
@@ -82,6 +89,28 @@ function startCam () {
     });
   }
 }
+
+var userList;
+//updates online user list
+socket.on('get users', function (data) {
+  userList = " ";
+  for (var user of data){
+    userList += `<div class="userPanel"><li class='user'>${user}</li><button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
+                                                                              </div>`;
+  }
+
+  userList.innerHTML = userList;
+  onlineUsers();
+});
+
+function onlineUsers () {
+  let _light = document.querySelector('#light');
+  let _onlineList = document.querySelector("#onlineList");
+  if (userList != undefined){
+    _light.innerHTML = `<div id = "online">Online now:</div><br>
+                           <div id = "userList">${userList}<div>`;
+  }
+}
 /*
 
 var _remotevideo = document.querySelector("#remotevideo");
@@ -96,7 +125,7 @@ var room;
 var isChannelReady = false;
 var isInitiator = false;
 var isStarted = false;
-var localStream;
+
 var pc;
 var remoteStream;
 var turnReady;
@@ -144,15 +173,7 @@ document.addEventListener("click", function (e) {
     _toolbox.classList.toggle('toolbox--active');
   }
 
-  if (e.target && e.target.id == "users"){
-        menuChecker(e);
-  if (_pallette.classList.contains("pallette--active")){
-    _pallette.innerHTML = `<div id = "onlineList"></div>`;
-    onlineUsers();
-  } else {
-    _pallette.innerHTML = " ";
-  }
-}
+
   var _signIn = document.querySelector("#signIn");
   var _username = document.querySelector("#username");
   //var chatName;
@@ -195,13 +216,7 @@ function startCam () {
   }
 }
 
-function onlineUsers () {
-  var _onlineList = document.querySelector("#onlineList");
-  if (userList != undefined){
-    _pallette.innerHTML = `<div id = "online">Online now:</div><br>
-                           <div id = "userList">${userList}<div>`;
-  }
-}
+
 
 //handles sending message to Server
 function sendMessage(message) {
@@ -209,21 +224,7 @@ function sendMessage(message) {
   socket.emit('message', message);
 }
 
-var userList;
-//updates online user list
-socket.on('get users', function (data) {
-  userList = " ";
-  for (var user of data){
-    userList += `<div class="userPanel"><li class='user'>${user}</li><button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
-                                                                  <button class="answerButton icofont icofont-check-circled" style="background-color:green;" ></button>
-                                                                  <button class="hangupButton icofont icofont-close-circled" style="background-color:red;" ></button>
-                                                                  <button class="busyButton icofont icofont-exchange" style="background-color:orange;" ></button>
-                                                                  </div>`;
-  }
 
-  userList.innerHTML = userList;
-  onlineUsers();
-});
 
 document.addEventListener("click", function (e) {
   if (e.target && e.target.classList.contains("callButton")){
