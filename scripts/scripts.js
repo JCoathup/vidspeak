@@ -97,7 +97,7 @@ var userList;
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
-    userList += `<div class="userPanel"><li class='user'>${user}</li><button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
+    userList += `<div class="userPanel"><li class='user'>${user}<button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
                                                                               </div>`;
   }
 

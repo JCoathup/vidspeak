@@ -214,18 +214,16 @@ main {
 #online {
   color:green;
   font-size: 2em;
-  margin-top: 5vh;
-  margin-left:1vw;
+  margin-top: 1vh;
 }
 #userList li {
   list-style-type: none;
-  width:60%;
+  width:96%;
   background-color: #666;
   color:#000;
-  padding:2% 2% 2% 7%;
-  font-size:1em;
+  padding:2% 2% 2% 2%;
+  font-size:2em;
   text-align:left;
-  margin-bottom:1%;
   float:left;
 }
 li {
@@ -283,4 +281,11 @@ button {
   background-color:#ededed;
   color:#000;
   vertical-align: middle;
+}
+button.callButton {
+  border-radius: 50%;
+  color:#fff;
+  padding:0;
+  margin:0;
+  float:right;
 }
