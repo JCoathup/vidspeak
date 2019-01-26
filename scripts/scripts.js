@@ -25,7 +25,7 @@ document.addEventListener("click", function(e){
   }
   if (e.target && e.target.id == "login"){
     let _light = document.querySelector('#light');
-    let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
+    let loggedIn = `<div id = "loginPanel"><div id ="loginText">You are logged in as: ${chatName}</div><button id = "signOut">Logout</button></div>`;
     if(chatName == null){
       _light.innerHTML = loggedOut;
     }

@@ -201,6 +201,8 @@ main {
 }
 #signOut {
     background-color: red;
+    font-size: 2em;
+    width:100%;
 }
 #loginText {
   margin: 1vh 0;
