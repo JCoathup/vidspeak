@@ -383,7 +383,6 @@ function hangup() {
 }
 
 function handleRemoteHangup() {
-  removeDuringCallButtons();
   console.log('Session terminated.');
   stop();
   isInitiator = false;
