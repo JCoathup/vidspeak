@@ -1,4 +1,4 @@
-let socket = io.connect();
+var socket = io.connect();
 let chatName = null;
 let loggedOut = `<div id = "loginPanel">
                      <div id ="loginText">Choose a username</div>
@@ -94,8 +94,11 @@ document.addEventListener("click", function(e){
   if (e.target && e.target.classList.contains("caller")){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
-        e.target.classList.add("hangupButton");
-    e.target.classList.remove("callButton", "icofont-phone-circle");
+
+    e.target.classList.remove("icofont-phone-circle");
+    e.target.classList.remove("callButton");
+    e.target.classList.add("hangupButton");
+
     e.target.style.backgroundColor = "red";
 
     room = chatName;
@@ -159,7 +162,7 @@ socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     if (user !== chatName){
-      userList += `<div class="userPanel"><li class='user'>${user}<button  id='${user}' class = "caller callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
+      userList += `<div class="userPanel"><li class='user'>${user}<button  id=${user} class = "caller callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
                                                                                 </div>`;
     }
     }
