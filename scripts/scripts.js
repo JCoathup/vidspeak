@@ -9,6 +9,34 @@ let loggedOut = `<div id = "loginPanel">
                    </div>`;
 let _localvideo = document.querySelector("#localvideo");
 let localStream;
+let _remotevideo = document.querySelector("#remotevideo");
+
+let room;
+let CHATROOM;
+
+let isChannelReady = false;
+let isInitiator = false;
+let isStarted = false;
+
+let pc;
+let remoteStream;
+let turnReady;
+
+let pcConfig = {
+  'iceServers': [{
+    'urls': 'stun:stun.l.google.com:19302'
+  }]
+};
+
+// Set up audio and video regardless of what devices are present.
+let sdpConstraints = {
+  offerToReceiveAudio: true,
+  offerToReceiveVideo: true
+};
+
+let constraints = {
+  video: true
+};
 
 document.addEventListener("click", function(e){
   if (e.target && e.target.id == "login") {
@@ -63,6 +91,39 @@ document.addEventListener("click", function(e){
     _light.innerHTML = `<div id = "onlineList"></div>`;
     onlineUsers();
   }
+  if (e.target && e.target.classList.contains("caller")){
+    isInitiator = true;
+    console.log("Calling user...", e.target.id);
+        e.target.classList.add("hangupButton");
+    e.target.classList.remove("callButton", "icofont-phone-circle");
+    e.target.style.backgroundColor = "red";
+
+    room = chatName;
+    socket.emit('create or join', room);
+    console.log('Attempted to create or  join room', room);
+
+    console.log('Getting user media with constraints', constraints);
+    socket.emit('call attempt', room, e.target.id);
+    gotStream(localStream);
+    if (location.hostname !== 'localhost') {
+      requestTurn(
+        'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
+      );
+    }
+  }
+  if (e.target && e.target.classList.contains("hangupButton")){
+    e.target.classList.remove("icofont-close-circled");
+    e.target.classList.add("callButton", "icofont-phone-circle");
+    e.target.style.backgroundColor = "green";
+    socket.emit('ended call');
+    stop();
+  }
+  if (e.target && e.target.classList.contains('answerButton')){
+      socket.emit('create or join', CHATROOM);
+      gotStream(localStream);
+      let _light = document.querySelector("#light");
+      _light.style.display = "none";
+  }
 })
 function openLightBox () {
   document.getElementById('light').style.display='block';
@@ -97,9 +158,11 @@ var userList;
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
-    userList += `<div class="userPanel"><li class='user'>${user}<button  id='${user}' class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
-                                                                              </div>`;
-  }
+    if (user !== chatName){
+      userList += `<div class="userPanel"><li class='user'>${user}<button  id='${user}' class = "caller callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
+                                                                                </div>`;
+    }
+    }
 
   userList.innerHTML = userList;
   onlineUsers();
@@ -113,149 +176,11 @@ function onlineUsers () {
                            <div id = "userList">${userList}<div>`;
   }
 }
-/*
 
-var _remotevideo = document.querySelector("#remotevideo");
-var _menu = document.querySelector("#menu");
-var _toolbox = document.querySelector(".toolbox");
-var _pallette = document.querySelector(".pallette");
-var _navigation = document.querySelector(".navigation");
-
-var loggedIn; var loggedOut;
-var room;
-
-var isChannelReady = false;
-var isInitiator = false;
-var isStarted = false;
-
-var pc;
-var remoteStream;
-var turnReady;
-
-var pcConfig = {
-  'iceServers': [{
-    'urls': 'stun:stun.l.google.com:19302'
-  }]
-};
-
-// Set up audio and video regardless of what devices are present.
-var sdpConstraints = {
-  offerToReceiveAudio: true,
-  offerToReceiveVideo: true
-};
-
-var constraints = {
-  video: true
-};
-
-document.addEventListener("click", function (e) {
-  //handles end call procedure
-  if (e.target && e.target.classList.contains("hangupButton")){
-    let hangupButton1 = e.target.previousElementSibling;
-    let hangupButton = hangupButton1.previousElementSibling;
-    removeDuringCallButtons(hangupButton.id);
-    socket.emit('ended call');
-    stop();
-  }
-  //handles logout procedure
-
-  if (e.target && e.target.id == "menu"){
-    var _subMenu = document.querySelectorAll(".subMenu");
-    for (var item of _subMenu){
-      if (item.classList.contains("button--active")){
-      // if menu already open then close main menu
-      item.classList.remove("button--active");
-      _pallette.innerHTML = " ";
-      _navigation.classList.remove('nav--move');
-      _pallette.classList.remove('pallette--active');
-      }
-    }
-    //else menu is closed then open main menu
-    _menu.classList.toggle('menu--active');
-    _toolbox.classList.toggle('toolbox--active');
-  }
-
-
-  var _signIn = document.querySelector("#signIn");
-  var _username = document.querySelector("#username");
-  //var chatName;
-
-})
-
-function openpallette(){
-  _pallette.classList.toggle('pallette--active');
-  _navigation.classList.toggle('nav--move');
-}
-
-function menuChecker(e){
-  if (e.target && e.target.classList.contains("subMenu")) {
-    var _subMenu = document.querySelectorAll(".subMenu");
-    for (var item of _subMenu){
-      if (item.classList.contains("button--active") && (item != e.target)){
-        item.classList.remove("button--active");
-        e.target.classList.toggle("button--active");
-        return;
-      }
-    }
-    e.target.classList.toggle("button--active");
-    openpallette();
-  }
-}
-////////////////////////////////////////////////
-// user login and display online users
-////////////////////////////////////////////////
-
-function startCam () {
-  if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({video: true})
-    .then(function(stream) {
-      _localvideo.srcObject = stream;
-      localStream = stream;
-    })
-    .catch(function(error) {
-      console.log("Something went wrong!");
-    });
-  }
-}
-
-
-
-//handles sending message to Server
 function sendMessage(message) {
   console.log('Client sending message: ', message);
   socket.emit('message', message);
 }
-
-
-
-document.addEventListener("click", function (e) {
-  if (e.target && e.target.classList.contains("callButton")){
-    isInitiator = true;
-    console.log("Calling user...", e.target.id);
-    room = chatName;
-    removeCallButtons();
-    duringCallButtons(e.target.id);
-    //sendMessage('attempting call', room);
-    socket.emit('create or join', room);
-    console.log('Attempted to create or  join room', room);
-
-    console.log('Getting user media with constraints', constraints);
-    socket.emit('call attempt', room, e.target.id);
-    gotStream(localStream);
-    if (location.hostname !== 'localhost') {
-      requestTurn(
-        'https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913'
-      );
-    }
-  }
-  if (e.target && e.target.classList.contains('answerButton')){
-      let callroom = e.target.previousElementSibling;
-      socket.emit('create or join', callroom.id);
-      gotStream(localStream);
-      removeCallAndRejectButtons(callroom.id);
-      duringCallButtons(callroom.id);
-  }
-})
 
 // socket listeners
 socket.on('call over', function(){
@@ -286,15 +211,16 @@ socket.on('log', function(array) {
 
 socket.on('is calling', function(room){
   console.log('invite to join room ', room);
-  removeCallButtons();
-  addCallAndRejectButtons(room);
+  CHATROOM = room;
+  let _light = document.querySelector("#light");
+  _light.innerHTML = `<div id="callNotify">${room} is calling</div><div id="callControl"><button style="background-color:green;" class="answerButton icofont icofont-check-circled"></button><button style="background-color:red;" class="hangupButton icofont icofont-close-circled"></button>`;
   //  socket.emit('create or join', room);
     console.log("one", room);
   //  gotStream(localStream);
     console.log("two", localStream);
 
 })
-// This client receives a message from server
+
 socket.on('message', function(message) {
   console.log('Client received message:', message);
   if (message === 'got user media') {
@@ -441,6 +367,9 @@ function handleRemoteStreamAdded(event) {
   remotevideo.classList.add("remotevideo--active");
   localvideo.classList.remove("localvideo");
   localvideo.classList.add("localvideo--active");
+  let _fade = document.querySelector("#fade");
+  let _light = document.querySelector("#light");
+  closeLightBox();
 }
 
 function handleRemoteStreamRemoved(event) {
@@ -473,42 +402,3 @@ function stop() {
   removeCallAndRejectButtons();
   removeDuringCallButtons();
 }
-
-//handles buttons before, during and after calls
-function removeCallButtons () {
-  let callButton = document.querySelectorAll('.userPanel button.callButton')
-  for (let x= 0; x< callButton.length; x++){
-    callButton[x].style.display = "none";
-  }
-}
-function replaceCallButtons () {
-  let callButton = document.querySelectorAll('.userPanel button.callButton')
-  for (let x= 0; x< callButton.length; x++){
-    callButton[x].style.display = "inline-block";
-  }
-}
-function addCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  answerButton.style.display = "inline-block";
-  hangupButton.style.display = "inline-block";
-}
-function removeCallAndRejectButtons (room) {
-  let answerButton = document.querySelector('button#'+room+' ~ button.answerButton');
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  answerButton.style.display = "none";
-  hangupButton.style.display = "none";
-}
-function duringCallButtons (room) {
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
-  hangupButton.style.display = "inline-block";
-  busyButton.style.display = "inline-block";
-}
-function removeDuringCallButtons (room) {
-  let hangupButton = document.querySelector('button#'+room+' ~ button.hangupButton');
-  let busyButton = document.querySelector('button#'+room+' ~ button.busyButton');
-  hangupButton.style.display = "none";
-  busyButton.style.display = "none";
-}
-*/

@@ -95,7 +95,10 @@
     top: .14285714em;
     text-align: center;
 }
-.icofont-close-circled:before {
+.icofont-close-circled {
+
+}
+.hangupButton:before {
   margin:0 auto;
   content: "\efb2";
 }
@@ -284,11 +287,36 @@ button {
   color:#000;
   vertical-align: middle;
 }
-button.callButton {
+.callButton, .answerButton {
   border-radius: 50%;
   color:#fff;
   padding:0;
   margin:0;
   float:right;
   font-size:3em;
+}
+.hangupButton {
+  border-radius: 50%;
+  color:#fff;
+  padding:0;
+  margin:0;
+  float:right;
+  font-size:3em;
+}
+#callNotify {
+  text-align:center;
+  font-size:3em;
+  color:#000;
+}
+#callControl {
+  width:40%;
+  margin: 5vh auto;
+}
+#callControl .answerButton {
+  float:left;
+  font-size:6em;
+}
+#callControl .hangupButton {
+  float:right;
+  font-size:6em;
 }
