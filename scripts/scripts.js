@@ -1,4 +1,4 @@
-var socket = io.connect();
+let socket = io.connect();
 let chatName = null;
 let loggedOut = `<div id = "loginPanel">
                      <div id ="loginText">Choose a username</div>
