@@ -398,7 +398,4 @@ function stop() {
   remotevideo.classList.add("remotevideo");
   localvideo.classList.remove("localvideo--active");
   localvideo.classList.add("localvideo");
-  replaceCallButtons();
-  removeCallAndRejectButtons();
-  removeDuringCallButtons();
 }
