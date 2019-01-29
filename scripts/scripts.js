@@ -361,9 +361,9 @@ function requestTurn(turnURL) {
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
-  remotevideo.srcObject = remoteStream;
-  remotevideo.classList.remove("remotevideo");
-  remotevideo.classList.add("remotevideo--active");
+  _remotevideo.srcObject = remoteStream;
+  _remotevideo.classList.remove("remotevideo");
+  _remotevideo.classList.add("remotevideo--active");
   _localvideo.classList.remove("localvideo");
   _localvideo.classList.add("localvideo--active");
   let _fade = document.querySelector("#fade");
@@ -391,9 +391,9 @@ function stop() {
   isStarted = false;
   pc.close();
   pc = null;
-  remotevideo.srcObject = null;
-  remotevideo.classList.remove("remotevideo--active");
-  remotevideo.classList.add("remotevideo");
+  _remotevideo.srcObject = null;
+  _remotevideo.classList.remove("remotevideo--active");
+  _remotevideo.classList.add("remotevideo");
   _localvideo.classList.remove("localvideo--active");
   _localvideo.classList.add("localvideo");
 }
