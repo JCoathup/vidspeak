@@ -91,15 +91,11 @@ document.addEventListener("click", function(e){
     _light.innerHTML = `<div id = "onlineList"></div>`;
     onlineUsers();
   }
-  if (e.target && e.target.classList.contains("caller")){
+  if (e.target && e.target.classList.contains("callButton")){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
+    changeButtons(e.target);
 
-    e.target.classList.remove("icofont-phone-circle");
-    e.target.classList.remove("callButton");
-    e.target.classList.add("hangupButton");
-
-    e.target.style.backgroundColor = "red";
 
     room = chatName;
     socket.emit('create or join', room);
@@ -156,13 +152,13 @@ function startCam () {
   }
 }
 
-var userList;
+let userList;
 //updates online user list
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     if (user !== chatName){
-      userList += `<div class="userPanel"><li class='user'>${user}<button  id=${user} class = "caller callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
+      userList += `<div class="userPanel"><li class='user'>${user}<button  id=${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
                                                                                 </div>`;
     }
     }
@@ -400,4 +396,10 @@ function stop() {
   remotevideo.classList.add("remotevideo");
   localvideo.classList.remove("localvideo--active");
   localvideo.classList.add("localvideo");
+}
+function changeButtons (change) {
+  change.classList.remove("icofont-phone-circle");
+  change.classList.remove("callButton");
+  change.classList.add("hangupButton");
+  change.style.backgroundColor = "red";
 }
