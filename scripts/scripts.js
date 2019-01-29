@@ -134,7 +134,7 @@ function closeLightBox () {
 }
 function logOut () {
   let _light = document.querySelector('#light');
-  localvideo.srcObject = null;
+  _localvideo.srcObject = null;
   chatName = null;
   socket.emit('bye');
   _light.innerHTML = loggedOut;
@@ -246,7 +246,7 @@ socket.on('message', function(message) {
 function gotStream(stream) {
   console.log('Adding local stream.');
   localStream = stream;
-  localvideo.srcObject = stream;
+  _localvideo.srcObject = stream;
   sendMessage('got user media');
   console.log("initiator", isInitiator, stream);
   if (isInitiator) {
@@ -364,8 +364,8 @@ function handleRemoteStreamAdded(event) {
   remotevideo.srcObject = remoteStream;
   remotevideo.classList.remove("remotevideo");
   remotevideo.classList.add("remotevideo--active");
-  localvideo.classList.remove("localvideo");
-  localvideo.classList.add("localvideo--active");
+  _localvideo.classList.remove("localvideo");
+  _localvideo.classList.add("localvideo--active");
   let _fade = document.querySelector("#fade");
   let _light = document.querySelector("#light");
   closeLightBox();
@@ -394,8 +394,8 @@ function stop() {
   remotevideo.srcObject = null;
   remotevideo.classList.remove("remotevideo--active");
   remotevideo.classList.add("remotevideo");
-  localvideo.classList.remove("localvideo--active");
-  localvideo.classList.add("localvideo");
+  _localvideo.classList.remove("localvideo--active");
+  _localvideo.classList.add("localvideo");
 }
 function changeButtons (change) {
   change.classList.remove("icofont-phone-circle");
