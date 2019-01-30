@@ -85,7 +85,7 @@ document.addEventListener("click", function(e){
   }
   if (e.target && e.target.id == "signOut"){
     logOut();
-    stop();
+    hangup();
   }
   if (e.target && e.target.id == "users"){
     let _light = document.querySelector('#light');
