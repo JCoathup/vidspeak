@@ -85,6 +85,7 @@ document.addEventListener("click", function(e){
   }
   if (e.target && e.target.id == "signOut"){
     logOut();
+    stop();
   }
   if (e.target && e.target.id == "users"){
     let _light = document.querySelector('#light');
@@ -96,7 +97,7 @@ document.addEventListener("click", function(e){
     console.log("Calling user...", e.target.id);
     //changeButtons(e.target);
     let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-    
+
     room = chatName;
     socket.emit('create or join', room);
     console.log('Attempted to create or  join room', room);
