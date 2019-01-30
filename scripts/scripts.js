@@ -94,9 +94,9 @@ document.addEventListener("click", function(e){
   if (e.target && e.target.classList.contains("callButton")){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
-    changeButtons(e.target);
-
-
+    //changeButtons(e.target);
+    let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+    
     room = chatName;
     socket.emit('create or join', room);
     console.log('Attempted to create or  join room', room);
@@ -398,8 +398,9 @@ function stop() {
   _localvideo.classList.add("localvideo");
 }
 function changeButtons (change) {
-  change.classList.remove("icofont-phone-circle");
-  change.classList.remove("callButton");
-  change.classList.add("hangupButton");
-  change.style.backgroundColor = "red";
+  change.classList = " ";
+  //change.classList.remove("icofont-phone-circle");
+  //change.classList.remove("callButton");
+  change.className = "hangupButton";
+  //change.style.backgroundColor = "red";
 }
