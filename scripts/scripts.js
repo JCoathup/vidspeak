@@ -10,30 +10,27 @@ let loggedOut = `<div id = "loginPanel">
 let _localvideo = document.querySelector("#localvideo");
 let localStream;
 let _remotevideo = document.querySelector("#remotevideo");
-
 let room;
 let CHATROOM;
-
+let CALLEE;
+let userIndicator;
 let isChannelReady = false;
 let isInitiator = false;
 let isStarted = false;
-
 let pc;
 let remoteStream;
 let turnReady;
-
+let userList;
 let pcConfig = {
   'iceServers': [{
     'urls': 'stun:stun.l.google.com:19302'
   }]
 };
-
 // Set up audio and video regardless of what devices are present.
 let sdpConstraints = {
   offerToReceiveAudio: true,
   offerToReceiveVideo: true
 };
-
 let constraints = {
   video: true
 };
@@ -91,17 +88,30 @@ document.addEventListener("click", function(e){
     let _light = document.querySelector('#light');
     _light.innerHTML = `<div id = "onlineList"></div>`;
     onlineUsers();
+    if (isStarted){
+      if (CHATROOM == chatName){
+        let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+        document.querySelector('#'+CALLEE).style.display = "none";
+        document.querySelector('.'+CALLEE).innerHTML += hangupButton;
+      }
+      else {
+        let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+        document.querySelector('#'+CHATROOM).style.display = "none";
+        document.querySelector('.'+CHATROOM).innerHTML += hangupButton;
+      }
+    }
   }
   if (e.target && e.target.classList.contains("callButton")){
     isInitiator = true;
     console.log("Calling user...", e.target.id);
-    //changeButtons(e.target);
+    CALLEE = e.target.id;
     let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-
+    document.querySelector('#'+e.target.id).style.display = "none";
+    document.querySelector('.'+e.target.id).innerHTML += hangupButton;
     room = chatName;
+    CHATROOM = room;
     socket.emit('create or join', room);
     console.log('Attempted to create or  join room', room);
-
     console.log('Getting user media with constraints', constraints);
     socket.emit('call attempt', room, e.target.id);
     gotStream(localStream);
@@ -112,9 +122,6 @@ document.addEventListener("click", function(e){
     }
   }
   if (e.target && e.target.classList.contains("hangupButton")){
-    e.target.classList.remove("icofont-close-circled");
-    e.target.classList.add("callButton", "icofont-phone-circle");
-    e.target.style.backgroundColor = "green";
     socket.emit('ended call');
     stop();
   }
@@ -123,6 +130,18 @@ document.addEventListener("click", function(e){
       gotStream(localStream);
       let _light = document.querySelector("#light");
       _light.style.display = "none";
+      let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+      document.querySelector('#'+CHATROOM).style.display = "none";
+      document.querySelector('.'+CHATROOM).innerHTML += hangupButton;
+  }
+  if ((e.target && e.target.className == "localvideo--active") || (e.target && e.target.className == "remotevideo")){
+    if (isStarted) {
+      console.log ("switch...");
+      remotevideo.classList.toggle("remotevideo");
+      remotevideo.classList.toggle("remotevideo--active");
+      localvideo.classList.toggle("localvideo");
+      localvideo.classList.toggle("localvideo--active");
+    }
   }
 })
 function openLightBox () {
@@ -152,22 +171,18 @@ function startCam () {
     });
   }
 }
-
-let userList;
 //updates online user list
 socket.on('get users', function (data) {
   userList = " ";
   for (var user of data){
     if (user !== chatName){
-      userList += `<div class="userPanel"><li class='user'>${user}<button  id=${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
+      userList += `<div class="userPanel"><li class='user ${user}'>${user}<button  id=${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
                                                                                 </div>`;
     }
-    }
-
+  }
   userList.innerHTML = userList;
   onlineUsers();
 });
-
 function onlineUsers () {
   let _light = document.querySelector('#light');
   let _onlineList = document.querySelector("#onlineList");
@@ -176,7 +191,6 @@ function onlineUsers () {
                            <div id = "userList">${userList}<div>`;
   }
 }
-
 function sendMessage(message) {
   console.log('Client sending message: ', message);
   socket.emit('message', message);
@@ -189,38 +203,27 @@ socket.on('call over', function(){
 socket.on('created', function(room) {
   console.log('Created room ' + room);
 });
-
 socket.on('full', function(room) {
   console.log('Room ' + room + ' is full');
 });
-
 socket.on('join', function (room){
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
   isChannelReady = true;
 });
-
 socket.on('joined', function(room) {
   console.log('joined: ' + room);
   isChannelReady = true;
 });
-
 socket.on('log', function(array) {
   console.log.apply(console, array);
 });
-
 socket.on('is calling', function(room){
   console.log('invite to join room ', room);
   CHATROOM = room;
   let _light = document.querySelector("#light");
   _light.innerHTML = `<div id="callNotify">${room} is calling</div><div id="callControl"><button style="background-color:green;" class="answerButton icofont icofont-check-circled"></button><button style="background-color:red;" class="hangupButton icofont icofont-close-circled"></button>`;
-  //  socket.emit('create or join', room);
-    console.log("one", room);
-  //  gotStream(localStream);
-    console.log("two", localStream);
-
 })
-
 socket.on('message', function(message) {
   console.log('Client received message:', message);
   if (message === 'got user media') {
@@ -254,7 +257,6 @@ function gotStream(stream) {
     maybeStart();
   }
 }
-
 function maybeStart() {
   console.log('>>>>>>> maybeStart() ', isStarted, localStream, isChannelReady);
   if (!isStarted && typeof localStream !== 'undefined' && isChannelReady) {
@@ -268,7 +270,6 @@ function maybeStart() {
     }
   }
 }
-
 window.onbeforeunload = function() {
   sendMessage('bye');
 };
@@ -288,7 +289,6 @@ function createPeerConnection() {
     return;
   }
 }
-
 function handleIceCandidate(event) {
   console.log('icecandidate event: ', event);
   if (event.candidate) {
@@ -302,16 +302,13 @@ function handleIceCandidate(event) {
     console.log('End of candidates.');
   }
 }
-
 function handleCreateOfferError(event) {
   console.log('createOffer() error: ', event);
 }
-
 function doCall() {
   console.log('Sending offer to peer');
   pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
 }
-
 function doAnswer() {
   console.log('Sending answer to peer.');
   pc.createAnswer().then(
@@ -319,17 +316,14 @@ function doAnswer() {
     onCreateSessionDescriptionError
   );
 }
-
 function setLocalAndSendMessage(sessionDescription) {
   pc.setLocalDescription(sessionDescription);
   console.log('setLocalAndSendMessage sending message', sessionDescription);
   sendMessage(sessionDescription);
 }
-
 function onCreateSessionDescriptionError(error) {
   trace('Failed to create session description: ' + error.toString());
 }
-
 function requestTurn(turnURL) {
   var turnExists = false;
   for (var i in pcConfig.iceServers) {
@@ -358,7 +352,6 @@ function requestTurn(turnURL) {
     xhr.send();
   }
 }
-
 function handleRemoteStreamAdded(event) {
   console.log('Remote stream added.');
   remoteStream = event.stream;
@@ -371,23 +364,19 @@ function handleRemoteStreamAdded(event) {
   let _light = document.querySelector("#light");
   closeLightBox();
 }
-
 function handleRemoteStreamRemoved(event) {
   console.log('Remote stream removed. Event: ', event);
 }
-
 function hangup() {
   console.log('Hanging up.');
   stop();
   sendMessage('bye');
 }
-
 function handleRemoteHangup() {
   console.log('Session terminated.');
   stop();
   isInitiator = false;
 }
-
 function stop() {
   isStarted = false;
   pc.close();
@@ -397,11 +386,14 @@ function stop() {
   _remotevideo.classList.add("remotevideo");
   _localvideo.classList.remove("localvideo--active");
   _localvideo.classList.add("localvideo");
-}
-function changeButtons (change) {
-  change.classList = " ";
-  //change.classList.remove("icofont-phone-circle");
-  //change.classList.remove("callButton");
-  change.className = "hangupButton";
-  //change.style.backgroundColor = "red";
+  if (CHATROOM == chatName){
+    let callButton = `<button  id=${CALLEE} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
+    document.querySelector('.'+CALLEE+' button.hangupButton').style.display = "none";
+    document.querySelector('.'+CALLEE).innerHTML += callButton;
+  }
+  else {
+    let callButton = `<button  id=${CHATROOM} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
+    document.querySelector('.'+CHATROOM+' button.hangupButton').style.display = "none";
+    document.querySelector('.'+CHATROOM).innerHTML += callButton;
+  }
 }
