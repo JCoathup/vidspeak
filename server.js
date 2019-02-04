@@ -5,7 +5,6 @@ var http = require('http');
 var server = require('http').createServer(app);
 var numClients = [];
 var fileServer = new(nodeStatic.Server)();
-var hostroom;
 var app = http.createServer(function(req, res) {
   fileServer.serve(req, res);
 }).listen(process.env.PORT || 8000);
@@ -32,13 +31,14 @@ socket.on('create or join', function(room) {
   log('Received request to create or join room ' + room);
 
   var clientsInRoom = io.sockets.adapter.rooms[room];
-  var numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
+  numClients = clientsInRoom ? Object.keys(clientsInRoom.sockets).length : 0;
   log('Room ' + room + ' now has ' + numClients + ' client(s)');
 
   if (numClients === 0) {
     socket.join(room);
     log('Client ID ' + socket.id + ' created room ' + room);
     socket.emit('created', room, socket.id);
+    console.log("NOW IN ROOM>>>", numClients);
 
   } else if (numClients === 1) {
     log('Client ID ' + socket.id + ' joined room ' + room);
@@ -46,63 +46,12 @@ socket.on('create or join', function(room) {
     socket.join(room);
     socket.emit('joined', room, socket.id);
     io.sockets.in(room).emit('ready');
+    console.log("NOW IN ROOM>>>", numClients);
   } else { // max two clients
     socket.emit('full', room);
+    console.log("NOW IN ROOM>>>", numClients);
   }
 });
-
-/*
-   socket.on('message', function(message) {
-    log('Client said: ', message);
-    // for a real app, would be room-only (not broadcast)
-    if (message == 'got user media'){
-      io.sockets.in(hostroom).emit('message', message);
-    }
-    else if (message.type == 'offer'){
-      io.sockets.in(hostroom).emit('message', message);
-    }
-    else if (message.type == 'candidate'){
-      io.sockets.in(hostroom).emit('message', message);
-    }
-    else if (message.type == 'answer'){
-      io.sockets.in(hostroom).emit('message', message);
-    }
-    else {
-      socket.broadcast.emit('message', message);
-    }
-    console.log("ROOM = " + hostroom);
-    //io.sockets.in(hostroom).emit('ready');
-  }); */
-/*  socket.on('create or join', function(room, recipient) {
-    hostroom = room;
-    log('Received request to create or join room ' + room);
-    numClients.push(socket);
-    console.log("Clients now are: ", numClients.length);
-    log('Room ' + room + ' now has ' + numClients.length + ' client(s)');
-
-    if (numClients.length === 1) {
-      socket.join(room);
-      log('Client ID ' + socket.id + ' created room ' + room);
-      for (var i=0; i<connections.length; i++){
-        if (connections[i].username == recipient){
-          connections[i].emit("invite", room);
-        }
-      }
-      socket.emit('created', room, socket.id);
-    } else if (numClients.length === 2) {
-      log('Client ID ' + socket.id + ' joined room ' + room);
-      io.sockets.in(room).emit('join', room);
-      socket.join(room);
-      socket.emit('joined', room, socket.id);
-      io.sockets.in(room).emit('ready');
-    } else { // max two clients
-      //socket.emit('full', room);
-        io.sockets.in(room).emit('join', room);
-      socket.join(room);
-      socket.emit('joined', room, socket.id);
-      console.log("more in room");
-    }
-  }); */
 
   socket.on('ipaddr', function() {
     var ifaces = os.networkInterfaces();
@@ -144,17 +93,31 @@ socket.on('create or join', function(room) {
         }
       }
     }
+    console.log("IN ROOM NOW>>>>", numClients);
   });
   //call finished indicator
   socket.on('ended call', function(host, guest){
     for(var l=0; l<connections.length; l++){
-      if (connections[l].username != host){
-        if (connections[l].username != guest){
-          connections[l].emit('call over', host, guest);
-        }
+      if ((connections[l].username == host) || (connections[l].username == guest)){
+        connections[l].emit('remote hangup', host, guest);
+      }
+      if ((connections[l].username == host) || (connections[l].username == guest)){
+          connections[l].leave(host);
+      }
+      else if ((connections[l].username != host) || (connections[l].username != guest)){
+        connections[l].emit('call over', host, guest);
       }
     }
   });
+  socket.on('call refused', function (host, guest){
+    console.log("call has been rejected", host, guest);
+    for(var l=0; l<connections.length; l++){
+      if ((connections[l].username == host) || (connections[l].username == guest)) {
+        console.log("sending message to>>> ", connections[l].username);
+        connections[l].emit('call rejected');
+      }
+    }
+  })
   //on user disconnections
   socket.on ('disconnect', function(data){
     users.splice(users.indexOf(socket.username), 1);

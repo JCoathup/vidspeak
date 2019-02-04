@@ -106,7 +106,8 @@ document.addEventListener("click", function(e){
     console.log("Calling user...", e.target.id);
     CALLEE = e.target.id;
     let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-    document.querySelector('#'+e.target.id).style.display = "none";
+    document.querySelector('.'+e.target.id+' button.callButton').style.display = "none";
+    //document.querySelector('#'+e.target.id).style.display = "none";
     document.querySelector('.'+e.target.id).innerHTML += hangupButton;
     room = chatName;
     CHATROOM = room;
@@ -122,10 +123,18 @@ document.addEventListener("click", function(e){
     }
   }
   if (e.target && e.target.classList.contains("hangupButton")){
-    socket.emit('ended call');
+    let guest;
+    if (isInitiator){
+      guest = CALLEE;
+    }
+    else {
+      guest = chatName;
+    }
+    socket.emit('ended call', CHATROOM, guest);
     stop();
   }
   if (e.target && e.target.classList.contains('answerButton')){
+     console.log("I ANSWERED>>>>>>>>>");
       socket.emit('create or join', CHATROOM);
       gotStream(localStream);
       let _light = document.querySelector("#light");
@@ -142,6 +151,17 @@ document.addEventListener("click", function(e){
       localvideo.classList.toggle("localvideo");
       localvideo.classList.toggle("localvideo--active");
     }
+  }
+  if (e.target && e.target.id == "callRejectedButton"){
+    console.log("REJECTED>>>>>>");
+    let guest;
+    if (isInitiator){
+      guest = CALLEE;
+    }
+    else {
+      guest = chatName;
+    }
+    socket.emit('call refused', CHATROOM, guest);
   }
 })
 function openLightBox () {
@@ -197,7 +217,31 @@ function sendMessage(message) {
 }
 
 // socket listeners
-socket.on('call over', function(){
+socket.on('call rejected', function () {
+  console.log("ENDING CONVO>>>>>");
+  let _light = document.querySelector('#light');
+  let _fade = document.querySelector('#fade');
+  _fade.style.display = "none";
+  _light.style.display = "none";
+  stop();
+})
+socket.on('busy', function(host, guest){
+  let busyButton = `<button  class = "busyButton icofont icofont-exchange" style="background-color:orange;"></button>`;
+  document.querySelector('.'+host+' button.callButton').style.display = "none";
+  document.querySelector('.'+host).innerHTML += busyButton;
+  document.querySelector('.'+guest+' button.callButton').style.display = "none";
+  document.querySelector('.'+guest).innerHTML += busyButton;
+})
+socket.on('call over', function(host, guest){
+  console.log("HOST AND GUEST>>>", host, guest);
+  let callButtonHost = `<button  id=${host} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
+  document.querySelector('.'+host+' button.busyButton').style.display = "none";
+  document.querySelector('.'+host).innerHTML += callButtonHost;
+  let callButtonGuest = `<button  id=${guest} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
+  document.querySelector('.'+guest+' button.busyButton').style.display = "none";
+  document.querySelector('.'+guest).innerHTML += callButtonGuest;
+})
+socket.on('remote hangup', function(){
   stop();
 })
 socket.on('created', function(room) {
@@ -222,7 +266,7 @@ socket.on('is calling', function(room){
   console.log('invite to join room ', room);
   CHATROOM = room;
   let _light = document.querySelector("#light");
-  _light.innerHTML = `<div id="callNotify">${room} is calling</div><div id="callControl"><button style="background-color:green;" class="answerButton icofont icofont-check-circled"></button><button style="background-color:red;" class="hangupButton icofont icofont-close-circled"></button>`;
+  _light.innerHTML = `<div id="callNotify">${room} is calling</div><div id="callControl"><button style="background-color:green;" class="answerButton icofont icofont-check-circled"></button><button id="callRejectedButton" style="background-color:red;" class="callRejectedButton icofont icofont-close-circled"></button>`;
 })
 socket.on('message', function(message) {
   console.log('Client received message:', message);
@@ -252,7 +296,6 @@ function gotStream(stream) {
   localStream = stream;
   _localvideo.srcObject = stream;
   sendMessage('got user media');
-  console.log("initiator", isInitiator, stream);
   if (isInitiator) {
     maybeStart();
   }
@@ -311,6 +354,7 @@ function doCall() {
 }
 function doAnswer() {
   console.log('Sending answer to peer.');
+  socket.emit('in call', CHATROOM, chatName);
   pc.createAnswer().then(
     setLocalAndSendMessage,
     onCreateSessionDescriptionError
@@ -379,8 +423,10 @@ function handleRemoteHangup() {
 }
 function stop() {
   isStarted = false;
+  isChannelReady =false;
   pc.close();
   pc = null;
+  room = null;
   _remotevideo.srcObject = null;
   _remotevideo.classList.remove("remotevideo--active");
   _remotevideo.classList.add("remotevideo");
