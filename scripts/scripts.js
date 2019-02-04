@@ -32,7 +32,8 @@ let sdpConstraints = {
   offerToReceiveVideo: true
 };
 let constraints = {
-  video: true
+  video: true,
+  audio:true
 };
 
 document.addEventListener("click", function(e){
