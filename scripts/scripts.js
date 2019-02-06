@@ -181,7 +181,7 @@ function logOut () {
 }
 function startCam () {
   if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({video: true, audio: true})
+      navigator.mediaDevices.getUserMedia({video: true})
     .then(function(stream) {
       _localvideo.srcObject = stream;
       localStream = stream;
