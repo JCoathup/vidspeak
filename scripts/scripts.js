@@ -36,7 +36,7 @@ let constraints = {
   audio:true
 };
 
-document.addEventListener("click", function(e){
+document.addEventListener("click", (e) => {
   if (e.target && e.target.id == "login") {
     openLightBox();
   }
@@ -65,7 +65,7 @@ document.addEventListener("click", function(e){
     e.preventDefault();
     if (!_username.value == " "){
       // check for duplicate user
-      socket.on('duplicate username', function (data) {
+      socket.on('duplicate username', (data) => {
         if (data == true) {
           _username.value="";
           _username.placeholder = "Username taken!";
@@ -73,7 +73,7 @@ document.addEventListener("click", function(e){
         }
       });
       //no duplicate found... continue
-      socket.emit('new user', _username.value, function() {
+      socket.emit('new user', _username.value, () => {
         chatName = _username.value;
         let loggedIn = `<div id ="loginText">You are logged in as: ${chatName}</div><div id = "loginPanel"><button id = "signOut">Logout</button></div>`;
         document.querySelector("#loginPanel").innerHTML = loggedIn;
@@ -92,12 +92,12 @@ document.addEventListener("click", function(e){
     if (isStarted){
       if (CHATROOM == chatName){
         let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-        document.querySelector('#'+CALLEE).style.display = "none";
+        document.querySelector('.'+CALLEE+' button.callButton').style.display = "none";
         document.querySelector('.'+CALLEE).innerHTML += hangupButton;
       }
       else {
         let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-        document.querySelector('#'+CHATROOM).style.display = "none";
+        document.querySelector('.'+CHATROOM+' button.callButton').style.display = "none";
         document.querySelector('.'+CHATROOM).innerHTML += hangupButton;
       }
     }
@@ -108,7 +108,6 @@ document.addEventListener("click", function(e){
     CALLEE = e.target.id;
     let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
     document.querySelector('.'+e.target.id+' button.callButton').style.display = "none";
-    //document.querySelector('#'+e.target.id).style.display = "none";
     document.querySelector('.'+e.target.id).innerHTML += hangupButton;
     room = chatName;
     CHATROOM = room;
@@ -182,18 +181,18 @@ function logOut () {
 }
 function startCam () {
   if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({video: true})
+      navigator.mediaDevices.getUserMedia({video: true, audio: true})
     .then(function(stream) {
       _localvideo.srcObject = stream;
       localStream = stream;
     })
-    .catch(function(error) {
+    .catch((error) => {
       console.log("Something went wrong!");
     });
   }
 }
 //updates online user list
-socket.on('get users', function (data) {
+socket.on('get users', (data) => {
   userList = " ";
   for (var user of data){
     if (user !== chatName){
@@ -218,7 +217,7 @@ function sendMessage(message) {
 }
 
 // socket listeners
-socket.on('call rejected', function () {
+socket.on('call rejected', () => {
   console.log("ENDING CONVO>>>>>");
   let _light = document.querySelector('#light');
   let _fade = document.querySelector('#fade');
@@ -226,14 +225,14 @@ socket.on('call rejected', function () {
   _light.style.display = "none";
   stop();
 })
-socket.on('busy', function(host, guest){
+socket.on('busy', (host, guest) => {
   let busyButton = `<button  class = "busyButton icofont icofont-exchange" style="background-color:orange;"></button>`;
   document.querySelector('.'+host+' button.callButton').style.display = "none";
   document.querySelector('.'+host).innerHTML += busyButton;
   document.querySelector('.'+guest+' button.callButton').style.display = "none";
   document.querySelector('.'+guest).innerHTML += busyButton;
 })
-socket.on('call over', function(host, guest){
+socket.on('call over', (host, guest) => {
   console.log("HOST AND GUEST>>>", host, guest);
   let callButtonHost = `<button  id=${host} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
   document.querySelector('.'+host+' button.busyButton').style.display = "none";
@@ -242,34 +241,35 @@ socket.on('call over', function(host, guest){
   document.querySelector('.'+guest+' button.busyButton').style.display = "none";
   document.querySelector('.'+guest).innerHTML += callButtonGuest;
 })
-socket.on('remote hangup', function(){
+socket.on('remote hangup', () => {
   stop();
 })
-socket.on('created', function(room) {
+socket.on('created', (room) => {
   console.log('Created room ' + room);
 });
-socket.on('full', function(room) {
+socket.on('full', (room) => {
   console.log('Room ' + room + ' is full');
 });
-socket.on('join', function (room){
+socket.on('join', (room) => {
   console.log('Another peer made a request to join room ' + room);
   console.log('This peer is the initiator of room ' + room + '!');
   isChannelReady = true;
 });
-socket.on('joined', function(room) {
+socket.on('joined', (room) => {
   console.log('joined: ' + room);
   isChannelReady = true;
 });
-socket.on('log', function(array) {
+socket.on('log', (array) => {
   console.log.apply(console, array);
 });
-socket.on('is calling', function(room){
+socket.on('is calling', (room) => {
   console.log('invite to join room ', room);
   CHATROOM = room;
+  openLightBox();
   let _light = document.querySelector("#light");
   _light.innerHTML = `<div id="callNotify">${room} is calling</div><div id="callControl"><button style="background-color:green;" class="answerButton icofont icofont-check-circled"></button><button id="callRejectedButton" style="background-color:red;" class="callRejectedButton icofont icofont-close-circled"></button>`;
 })
-socket.on('message', function(message) {
+socket.on('message', (message) => {
   console.log('Client received message:', message);
   if (message === 'got user media') {
     maybeStart();
@@ -314,7 +314,7 @@ function maybeStart() {
     }
   }
 }
-window.onbeforeunload = function() {
+window.onbeforeunload = () => {
   sendMessage('bye');
 };
 
@@ -382,7 +382,7 @@ function requestTurn(turnURL) {
     console.log('Getting TURN server from ', turnURL);
     // No TURN server. Get one from computeengineondemand.appspot.com:
     var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         var turnServer = JSON.parse(xhr.responseText);
         console.log('Got TURN server: ', turnServer);
@@ -443,4 +443,5 @@ function stop() {
     document.querySelector('.'+CHATROOM+' button.hangupButton').style.display = "none";
     document.querySelector('.'+CHATROOM).innerHTML += callButton;
   }
+  closeLightBox();
 }
