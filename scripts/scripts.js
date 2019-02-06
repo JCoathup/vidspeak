@@ -32,8 +32,7 @@ let sdpConstraints = {
   offerToReceiveVideo: true
 };
 let constraints = {
-  video: true,
-  audio:true
+  video: true
 };
 
 document.addEventListener("click", (e) => {
@@ -181,7 +180,7 @@ function logOut () {
 }
 function startCam () {
   if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({video: true})
+      navigator.mediaDevices.getUserMedia({video: true, audio: true})
     .then(function(stream) {
       _localvideo.srcObject = stream;
       localStream = stream;
