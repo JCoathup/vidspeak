@@ -90,14 +90,14 @@ document.addEventListener("click", (e) => {
     onlineUsers();
     if (isStarted){
       if (CHATROOM == chatName){
-        let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+        //let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
         document.querySelector('.'+CALLEE+' button.callButton').style.display = "none";
-        document.querySelector('.'+CALLEE).innerHTML += hangupButton;
+        document.querySelector('.'+CALLEE+' button.hangupButton').style.display = "block";
       }
       else {
-        let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
+        //let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
         document.querySelector('.'+CHATROOM+' button.callButton').style.display = "none";
-        document.querySelector('.'+CHATROOM).innerHTML += hangupButton;
+        document.querySelector('.'+CHATROOM+' button.hangupButton').style.display = "block";
       }
     }
   }
@@ -107,7 +107,7 @@ document.addEventListener("click", (e) => {
     CALLEE = e.target.id;
     let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
     document.querySelector('.'+e.target.id+' button.callButton').style.display = "none";
-    document.querySelector('.'+e.target.id).innerHTML += hangupButton;
+    document.querySelector('.'+e.target.id+' button.hangupButton').style.display = "block";
     room = chatName;
     CHATROOM = room;
     socket.emit('create or join', room);
@@ -136,11 +136,10 @@ document.addEventListener("click", (e) => {
      console.log("I ANSWERED>>>>>>>>>");
       socket.emit('create or join', CHATROOM);
       gotStream(localStream);
-      let _light = document.querySelector("#light");
-      _light.style.display = "none";
-      let hangupButton = `<button style="background-color:red;" class="icofont hangupButton"></button>`;
-      document.querySelector('#'+CHATROOM).style.display = "none";
-      document.querySelector('.'+CHATROOM).innerHTML += hangupButton;
+      closeLightBox();
+      console.log("ROOM IS NOW TODAY>>>>>>>>", CHATROOM, room);
+      document.querySelector('.'+CHATROOM+' button.callButton').style.display = "none";
+      document.querySelector('.'+CHATROOM+' button.hangupButton').style.display = "block";
   }
   if ((e.target && e.target.className == "localvideo--active") || (e.target && e.target.className == "remotevideo")){
     if (isStarted) {
@@ -195,8 +194,13 @@ socket.on('get users', (data) => {
   userList = " ";
   for (var user of data){
     if (user !== chatName){
-      userList += `<div class="userPanel"><li class='user ${user}'>${user}<button  id=${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button></li>
-                                                                                </div>`;
+      userList += `<div class="userPanel">
+                    <li class='user ${user}'>${user}
+                      <button  id=${user} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>
+                      <button  class = "hangupButton icofont icofont-close-circled" style="background-color:red;"></button>
+                      <button  class = "busyButton icofont icofont-exchange" style="background-color:orange;"></button>
+                    </li>
+                  </div>`;
     }
   }
   userList.innerHTML = userList;
@@ -225,20 +229,17 @@ socket.on('call rejected', () => {
   stop();
 })
 socket.on('busy', (host, guest) => {
-  let busyButton = `<button  class = "busyButton icofont icofont-exchange" style="background-color:orange;"></button>`;
   document.querySelector('.'+host+' button.callButton').style.display = "none";
-  document.querySelector('.'+host).innerHTML += busyButton;
+  document.querySelector('.'+host+' button.busyButton').style.display = "block";
   document.querySelector('.'+guest+' button.callButton').style.display = "none";
-  document.querySelector('.'+guest).innerHTML += busyButton;
+  document.querySelector('.'+guest+' button.busyButton').style.display = "block";
 })
 socket.on('call over', (host, guest) => {
   console.log("HOST AND GUEST>>>", host, guest);
-  let callButtonHost = `<button  id=${host} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
   document.querySelector('.'+host+' button.busyButton').style.display = "none";
-  document.querySelector('.'+host).innerHTML += callButtonHost;
-  let callButtonGuest = `<button  id=${guest} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
+  document.querySelector('.'+host+' button.callButton').style.display = "block";
   document.querySelector('.'+guest+' button.busyButton').style.display = "none";
-  document.querySelector('.'+guest).innerHTML += callButtonGuest;
+  document.querySelector('.'+guest+' button.callButton').style.display - "block";
 })
 socket.on('remote hangup', () => {
   stop();
@@ -404,8 +405,6 @@ function handleRemoteStreamAdded(event) {
   _remotevideo.classList.add("remotevideo--active");
   _localvideo.classList.remove("localvideo");
   _localvideo.classList.add("localvideo--active");
-  let _fade = document.querySelector("#fade");
-  let _light = document.querySelector("#light");
   closeLightBox();
 }
 function handleRemoteStreamRemoved(event) {
@@ -433,14 +432,14 @@ function stop() {
   _localvideo.classList.remove("localvideo--active");
   _localvideo.classList.add("localvideo");
   if (CHATROOM == chatName){
-    let callButton = `<button  id=${CALLEE} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
     document.querySelector('.'+CALLEE+' button.hangupButton').style.display = "none";
-    document.querySelector('.'+CALLEE).innerHTML += callButton;
+    document.querySelector('.'+CALLEE+' button.callButton').style.display = "block";
   }
   else {
-    let callButton = `<button  id=${CHATROOM} class = "callButton icofont icofont-phone-circle" style="background-color:green;"></button>`;
     document.querySelector('.'+CHATROOM+' button.hangupButton').style.display = "none";
-    document.querySelector('.'+CHATROOM).innerHTML += callButton;
+    document.querySelector('.'+CHATROOM+' button.callButton').style.display = "block";
   }
   closeLightBox();
+  CHATROOM = null;
+  isInitiator = false;
 }

@@ -320,3 +320,6 @@ button {
   float:right;
   font-size:6em;
 }
+.busyButton, .hangupButton {
+  display:none;
+}
